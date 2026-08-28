@@ -61,6 +61,30 @@ async function fetchAllPosts() {
   return keys.flatMap((k, i) => results[i].map((post) => ({ ...post, category: post.category || k })));
 }
 
+function escapeHtml(value) {
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Only allow http(s) URLs to be used in href/src attributes, to avoid
+// javascript: or other unsafe schemes being injected from data files.
+function safeUrl(url) {
+  if (!url) return "";
+  try {
+    const parsed = new URL(url, window.location.href);
+    if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+      return parsed.href;
+    }
+  } catch (err) {
+    // ignore invalid URLs
+  }
+  return "";
+}
+
 function formatDate(dateStr) {
   if (!dateStr) return "";
   const d = new Date(dateStr);
@@ -74,22 +98,22 @@ function cardTemplate(post) {
   const postUrl = category ? `${resolveUrl(category.postPath)}?slug=${encodeURIComponent(post.slug)}` : "#";
   const secondary = post.ticker ? `(${post.ticker})` : post.location || "";
   const tags = (post.tags || [])
-    .map((t) => `<span class="tag">#${t}</span>`)
+    .map((t) => `<span class="tag">#${escapeHtml(t)}</span>`)
     .join("");
 
   return `
-    <article class="card" data-title="${(post.title || "").toLowerCase()}" data-tags="${(post.tags || []).join(",").toLowerCase()}">
-      <a href="${postUrl}">
-        <img src="${post.image || ""}" alt="${post.title || ""}" loading="lazy" />
+    <article class="card" data-title="${escapeHtml((post.title || "").toLowerCase())}" data-tags="${escapeHtml((post.tags || []).join(",").toLowerCase())}">
+      <a href="${escapeHtml(postUrl)}">
+        <img src="${escapeHtml(safeUrl(post.image))}" alt="${escapeHtml(post.title || "")}" loading="lazy" />
       </a>
       <div class="card-body">
-        <span class="badge ${post.category}">${label}</span>
-        <h3><a href="${postUrl}">${post.title}</a> ${secondary ? `<small>${secondary}</small>` : ""}</h3>
-        <p class="summary">${post.summary || ""}</p>
+        <span class="badge ${escapeHtml(post.category)}">${escapeHtml(label)}</span>
+        <h3><a href="${escapeHtml(postUrl)}">${escapeHtml(post.title)}</a> ${secondary ? `<small>${escapeHtml(secondary)}</small>` : ""}</h3>
+        <p class="summary">${escapeHtml(post.summary || "")}</p>
         <div class="tags">${tags}</div>
         <div class="card-meta">
-          <span>${formatDate(post.date)}</span>
-          <a class="card-link" href="${postUrl}">자세히 보기 →</a>
+          <span>${escapeHtml(formatDate(post.date))}</span>
+          <a class="card-link" href="${escapeHtml(postUrl)}">자세히 보기 →</a>
         </div>
       </div>
     </article>
@@ -171,20 +195,21 @@ async function renderPostDetail(categoryKey, containerId) {
     return;
   }
 
-  document.title = `${post.title} | All About the World`;
+  document.title = `${escapeHtml(post.title)} | All About the World`;
   const category = CATEGORIES[categoryKey];
   const secondary = post.ticker ? `종목코드 ${post.ticker}` : post.location || "";
-  const body = (post.content || []).map((p) => `<p>${p}</p>`).join("");
-  const tags = (post.tags || []).map((t) => `<span class="tag">#${t}</span>`).join("");
+  const body = (post.content || []).map((p) => `<p>${escapeHtml(p)}</p>`).join("");
+  const tags = (post.tags || []).map((t) => `<span class="tag">#${escapeHtml(t)}</span>`).join("");
+  const link = safeUrl(post.link);
 
   container.innerHTML = `
-    <img class="cover" src="${post.image || ""}" alt="${post.title}" />
-    <span class="badge ${categoryKey}">${category ? category.label : categoryKey}</span>
-    <h1>${post.title}</h1>
-    <div class="post-meta">${secondary ? `${secondary} · ` : ""}${formatDate(post.date)}</div>
+    <img class="cover" src="${escapeHtml(safeUrl(post.image))}" alt="${escapeHtml(post.title)}" />
+    <span class="badge ${escapeHtml(categoryKey)}">${escapeHtml(category ? category.label : categoryKey)}</span>
+    <h1>${escapeHtml(post.title)}</h1>
+    <div class="post-meta">${secondary ? `${escapeHtml(secondary)} · ` : ""}${escapeHtml(formatDate(post.date))}</div>
     <div class="tags">${tags}</div>
     <div class="post-body">${body}</div>
-    ${post.link ? `<a class="external-link" href="${post.link}" target="_blank" rel="noopener">관련 링크 바로가기</a>` : ""}
+    ${link ? `<a class="external-link" href="${escapeHtml(link)}" target="_blank" rel="noopener">관련 링크 바로가기</a>` : ""}
   `;
 }
 
