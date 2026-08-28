@@ -214,14 +214,6 @@ async function renderPostDetail(categoryKey, containerId) {
 }
 
 // ---------------------------------------------------------
-// Contact form handling (FormSubmit handles the native form submission)
-// ---------------------------------------------------------
-function setupContactForm(formId) {
-  const form = document.getElementById(formId);
-  if (!form || !form.hasAttribute("action")) return;
-}
-
-// ---------------------------------------------------------
 // Mobile navigation toggle (optional, header contains nav)
 // ---------------------------------------------------------
 function setupNavToggle(toggleId, navId) {
