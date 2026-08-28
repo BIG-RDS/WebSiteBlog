@@ -218,7 +218,7 @@ async function renderPostDetail(categoryKey, containerId) {
 // ---------------------------------------------------------
 function setupContactForm(formId) {
   const form = document.getElementById(formId);
-  if (!form || form.action) return;
+  if (!form || !form.hasAttribute("action")) return;
 }
 
 // ---------------------------------------------------------
