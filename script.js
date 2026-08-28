@@ -1,0 +1,221 @@
+/* =========================================================
+   All About the World - Shared Script
+   Handles: header/footer injection, data loading, rendering,
+   search & filter, and contact form submission.
+   ========================================================= */
+
+// ---------------------------------------------------------
+// Category registry - add a new category here to extend the
+// site (e.g. news). Each category needs a data file, a color
+// class name (used in style.css as .badge.<key>) and a path.
+// ---------------------------------------------------------
+const CATEGORIES = {
+  stock: {
+    label: "주식(종목분석)",
+    dataUrl: "data/stocks.json",
+    listPath: "stock/index.html",
+    postPath: "stock/post.html",
+  },
+  travel: {
+    label: "여행",
+    dataUrl: "data/travel.json",
+    listPath: "travel/index.html",
+    postPath: "travel/post.html",
+  },
+  // news: { label: "뉴스", dataUrl: "data/news.json", listPath: "news/index.html", postPath: "news/post.html" },
+};
+
+// Directory that script.js itself lives in (the site root), regardless of
+// whether the current page included it as "script.js" or "../script.js".
+// This lets us build correct links whether the site is hosted at a domain
+// root (e.g. https://airsky.com/) or under a GitHub Pages project path
+// (e.g. https://user.github.io/repo/).
+const SCRIPT_DIR = (function resolveScriptDir() {
+  const currentScript =
+    document.currentScript ||
+    Array.from(document.getElementsByTagName("script")).find((s) => /script\.js$/.test(s.src));
+  const src = currentScript ? currentScript.src : document.baseURI;
+  return src.replace(/[^/]*$/, "");
+})();
+
+function resolveUrl(path) {
+  return new URL(path, SCRIPT_DIR).toString();
+}
+
+async function fetchCategoryData(categoryKey) {
+  const category = CATEGORIES[categoryKey];
+  if (!category) return [];
+  try {
+    const res = await fetch(resolveUrl(category.dataUrl));
+    if (!res.ok) throw new Error(`Failed to load ${category.dataUrl}`);
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+async function fetchAllPosts() {
+  const keys = Object.keys(CATEGORIES);
+  const results = await Promise.all(keys.map((k) => fetchCategoryData(k)));
+  return keys.flatMap((k, i) => results[i].map((post) => ({ ...post, category: post.category || k })));
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
+}
+
+function cardTemplate(post) {
+  const category = CATEGORIES[post.category];
+  const label = category ? category.label : post.category;
+  const postUrl = category ? `${resolveUrl(category.postPath)}?slug=${encodeURIComponent(post.slug)}` : "#";
+  const secondary = post.ticker ? `(${post.ticker})` : post.location || "";
+  const tags = (post.tags || [])
+    .map((t) => `<span class="tag">#${t}</span>`)
+    .join("");
+
+  return `
+    <article class="card" data-title="${(post.title || "").toLowerCase()}" data-tags="${(post.tags || []).join(",").toLowerCase()}">
+      <a href="${postUrl}">
+        <img src="${post.image || ""}" alt="${post.title || ""}" loading="lazy" />
+      </a>
+      <div class="card-body">
+        <span class="badge ${post.category}">${label}</span>
+        <h3><a href="${postUrl}">${post.title}</a> ${secondary ? `<small>${secondary}</small>` : ""}</h3>
+        <p class="summary">${post.summary || ""}</p>
+        <div class="tags">${tags}</div>
+        <div class="card-meta">
+          <span>${formatDate(post.date)}</span>
+          <a class="card-link" href="${postUrl}">자세히 보기 →</a>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function renderCards(container, posts) {
+  if (!container) return;
+  if (!posts.length) {
+    container.innerHTML = '<p class="empty-state">표시할 글이 없습니다.</p>';
+    return;
+  }
+  container.innerHTML = posts.map(cardTemplate).join("");
+}
+
+function sortByDateDesc(posts) {
+  return [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+// ---------------------------------------------------------
+// Search & Filter (used on home page and category list pages)
+// ---------------------------------------------------------
+function setupSearchAndFilter({ searchInputId, filterBarId, cardGridId, getAllPosts }) {
+  const searchInput = document.getElementById(searchInputId);
+  const filterBar = document.getElementById(filterBarId);
+  const cardGrid = document.getElementById(cardGridId);
+  let allPosts = [];
+  let activeFilter = "all";
+
+  function applyFilters() {
+    const query = (searchInput && searchInput.value.trim().toLowerCase()) || "";
+    let filtered = allPosts;
+    if (activeFilter !== "all") {
+      filtered = filtered.filter((p) => p.category === activeFilter);
+    }
+    if (query) {
+      filtered = filtered.filter((p) => {
+        const haystack = [p.title, p.summary, ...(p.tags || [])].join(" ").toLowerCase();
+        return haystack.includes(query);
+      });
+    }
+    renderCards(cardGrid, sortByDateDesc(filtered));
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", applyFilters);
+  }
+
+  if (filterBar) {
+    filterBar.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-filter]");
+      if (!btn) return;
+      activeFilter = btn.dataset.filter;
+      filterBar.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      applyFilters();
+    });
+  }
+
+  getAllPosts().then((posts) => {
+    allPosts = posts;
+    applyFilters();
+  });
+}
+
+// ---------------------------------------------------------
+// Post detail page rendering
+// ---------------------------------------------------------
+async function renderPostDetail(categoryKey, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+  const posts = await fetchCategoryData(categoryKey);
+  const post = posts.find((p) => p.slug === slug);
+
+  if (!post) {
+    container.innerHTML = '<p class="empty-state">해당 글을 찾을 수 없습니다.</p>';
+    return;
+  }
+
+  document.title = `${post.title} | All About the World`;
+  const category = CATEGORIES[categoryKey];
+  const secondary = post.ticker ? `종목코드 ${post.ticker}` : post.location || "";
+  const body = (post.content || []).map((p) => `<p>${p}</p>`).join("");
+  const tags = (post.tags || []).map((t) => `<span class="tag">#${t}</span>`).join("");
+
+  container.innerHTML = `
+    <img class="cover" src="${post.image || ""}" alt="${post.title}" />
+    <span class="badge ${categoryKey}">${category ? category.label : categoryKey}</span>
+    <h1>${post.title}</h1>
+    <div class="post-meta">${secondary ? `${secondary} · ` : ""}${formatDate(post.date)}</div>
+    <div class="tags">${tags}</div>
+    <div class="post-body">${body}</div>
+    ${post.link ? `<a class="external-link" href="${post.link}" target="_blank" rel="noopener">관련 링크 바로가기</a>` : ""}
+  `;
+}
+
+// ---------------------------------------------------------
+// Contact form handling (mailto fallback)
+// ---------------------------------------------------------
+function setupContactForm(formId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  const CONTACT_EMAIL = "ikgyubae@gmail.com";
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = form.querySelector("#name").value.trim();
+    const email = form.querySelector("#email").value.trim();
+    const message = form.querySelector("#message").value.trim();
+
+    const subject = encodeURIComponent(`[All About the World 문의] ${name}님의 메시지`);
+    const body = encodeURIComponent(`보낸사람: ${name} <${email}>\n\n${message}`);
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+  });
+}
+
+// ---------------------------------------------------------
+// Mobile navigation toggle (optional, header contains nav)
+// ---------------------------------------------------------
+function setupNavToggle(toggleId, navId) {
+  const toggle = document.getElementById(toggleId);
+  const nav = document.getElementById(navId);
+  if (!toggle || !nav) return;
+  toggle.addEventListener("click", () => {
+    nav.classList.toggle("open");
+  });
+}

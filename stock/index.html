@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>주식(종목분석) | All About the World</title>
+  <meta name="description" content="삼성전자, 현대차, SK하이닉스 등 다양한 종목 분석 글 모음." />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-logo" href="../index.html">All About <span>the World</span></a>
+      <nav class="site-nav" id="mainNav">
+        <ul>
+          <li><a href="../index.html">홈</a></li>
+          <li><a href="index.html" class="active">주식(종목분석)</a></li>
+          <li><a href="../travel/index.html">여행</a></li>
+          <li><a href="../contact.html">문의하기</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>주식(종목분석)</h1>
+      <p>엄선된 국내 주요 종목 분석을 확인해보세요.</p>
+      <form class="search-bar" onsubmit="return false;">
+        <input type="text" id="stockSearch" placeholder="종목명 또는 태그로 검색" />
+        <button type="submit">검색</button>
+      </form>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="section">
+      <div class="card-grid" id="stockCardGrid">
+        <p class="empty-state">불러오는 중...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <h3>All About the World</h3>
+        <p>세상의 모든 정보를 큐레이션합니다.</p>
+        <div class="social-links">
+          <a href="mailto:ikgyubae@gmail.com">Email</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <ul>
+          <li><a href="index.html">주식(종목분석)</a></li>
+          <li><a href="../travel/index.html">여행</a></li>
+          <li><a href="../contact.html">문의하기</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 All About the World. All rights reserved.</div>
+  </footer>
+
+  <script src="../script.js"></script>
+  <script>
+    setupSearchAndFilter({
+      searchInputId: "stockSearch",
+      filterBarId: null,
+      cardGridId: "stockCardGrid",
+      getAllPosts: () => fetchCategoryData("stock"),
+    });
+  </script>
+</body>
+</html>
