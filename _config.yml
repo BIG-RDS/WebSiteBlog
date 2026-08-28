@@ -1,7 +1,7 @@
 title: All About the World
 description: "세상의 모든 정보를 큐레이션합니다 - 주식(종목분석), 여행, 그리고 더 많은 카테고리."
-url: "https://airsky.com"
-baseurl: ""
+url: "https://big-rds.github.io"
+baseurl: "/WebSiteBlog"
 lang: ko
 author: ikgyubae@gmail.com
 
