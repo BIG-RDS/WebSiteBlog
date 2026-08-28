@@ -233,7 +233,7 @@ img {
 
 .card img {
   width: 100%;
-  height: 240px;
+  height: 160px;
   object-fit: cover;
   background: var(--color-border);
 }
@@ -433,6 +433,38 @@ img {
   height: 1px;
   opacity: 0;
   pointer-events: none;
+}
+
+.form-success {
+  display: none;
+  padding: 16px;
+  background: #d1fae5;
+  border: 1px solid #6ee7b7;
+  border-radius: 8px;
+  color: #065f46;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.form-success.show {
+  display: block;
+}
+
+.form-error {
+  display: none;
+  padding: 16px;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  color: #991b1b;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.form-error.show {
+  display: block;
 }
 
 /* ---------- Footer ---------- */
