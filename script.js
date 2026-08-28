@@ -214,23 +214,11 @@ async function renderPostDetail(categoryKey, containerId) {
 }
 
 // ---------------------------------------------------------
-// Contact form handling (mailto fallback)
+// Contact form handling (FormSubmit handles the native form submission)
 // ---------------------------------------------------------
 function setupContactForm(formId) {
   const form = document.getElementById(formId);
-  if (!form) return;
-  const CONTACT_EMAIL = "ikgyubae@gmail.com";
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = form.querySelector("#name").value.trim();
-    const email = form.querySelector("#email").value.trim();
-    const message = form.querySelector("#message").value.trim();
-
-    const subject = encodeURIComponent(`[All About the World 문의] ${name}님의 메시지`);
-    const body = encodeURIComponent(`보낸사람: ${name} <${email}>\n\n${message}`);
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-  });
+  if (!form || form.action) return;
 }
 
 // ---------------------------------------------------------
