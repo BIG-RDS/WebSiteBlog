@@ -233,7 +233,7 @@ img {
 
 .card img {
   width: 100%;
-  height: 120px;
+  height: 20px;
   object-fit: cover;
   background: var(--color-border);
 }
@@ -247,10 +247,11 @@ img {
 
 .card-body h3 {
   margin: 0 0 10px;
-  font-size: 1.35rem;
-  font-weight: 800;
+  font-size: 1.6rem;
+  font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 1.3;
+  line-height: 1.2;
+  color: var(--color-primary);
 }
 
 .card-body p.summary {
