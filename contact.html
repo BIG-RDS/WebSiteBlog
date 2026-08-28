@@ -10,7 +10,10 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a class="site-logo" href="index.html">All About <span>the World</span></a>
+      <div class="brand-lockup">
+        <a class="site-logo" href="index.html">All About <span>the World</span></a>
+        <a class="site-domain" href="https://big-rds.github.io/WebSiteBlog/">big-rds.github.io</a>
+      </div>
       <nav class="site-nav" id="mainNav">
         <ul>
           <li><a href="index.html">홈</a></li>
@@ -32,7 +35,11 @@
   <main class="container">
     <section class="section">
       <div class="contact-wrap">
-        <form id="contactForm">
+        <form id="contactForm" action="https://formsubmit.co/ikgyubae@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="[All About the World 문의]" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_next" value="https://big-rds.github.io/WebSiteBlog/contact.html?sent=1" />
+          <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div class="form-group">
             <label for="name">이름</label>
             <input type="text" id="name" name="name" placeholder="홍길동" required />
@@ -47,7 +54,7 @@
           </div>
           <button type="submit" class="btn-submit">메시지 보내기</button>
         </form>
-        <p class="form-note">전송 버튼을 누르면 기본 메일 앱을 통해 ikgyubae@gmail.com 으로 메시지가 전달됩니다.</p>
+        <p class="form-note">메시지는 안전한 FormSubmit 서비스를 통해 이메일로 전달됩니다.</p>
       </div>
     </section>
   </main>
@@ -73,8 +80,5 @@
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    setupContactForm("contactForm");
-  </script>
 </body>
 </html>
