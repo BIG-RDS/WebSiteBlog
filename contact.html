@@ -6,13 +6,14 @@
   <title>문의하기 | All About the World</title>
   <meta name="description" content="All About the World에 문의하기." />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
   <header class="site-header">
     <div class="header-inner">
       <div class="brand-lockup">
         <a class="site-logo" href="index.html">All About <span>the World</span></a>
-        <a class="site-domain" href="https://big-rds.github.io/WebSiteBlog/">big-rds.github.io</a>
+        <a class="site-domain" href="https://airsky.com/">airsky.com</a>
       </div>
       <nav class="site-nav" id="mainNav">
         <ul>
@@ -35,11 +36,9 @@
   <main class="container">
     <section class="section">
       <div class="contact-wrap">
-        <form id="contactForm" action="https://formsubmit.co/ikgyubae@gmail.com" method="POST">
-          <input type="hidden" name="_subject" value="[All About the World 문의]" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_next" value="https://big-rds.github.io/WebSiteBlog/contact.html?sent=1" />
-          <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div id="successMessage" class="form-success"></div>
+        <div id="errorMessage" class="form-error"></div>
+        <form id="contactForm">
           <div class="form-group">
             <label for="name">이름</label>
             <input type="text" id="name" name="name" placeholder="홍길동" required />
@@ -54,7 +53,7 @@
           </div>
           <button type="submit" class="btn-submit">메시지 보내기</button>
         </form>
-        <p class="form-note">메시지는 안전한 FormSubmit 서비스를 통해 이메일로 전달됩니다.</p>
+        <p class="form-note">메시지는 안전하게 ikgyubae@gmail.com으로 전달됩니다.</p>
       </div>
     </section>
   </main>
@@ -80,5 +79,43 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    emailjs.init("NqFgrX5xaGJ7bDqWu");
+
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+
+      emailjs.send("service_website", "template_contact", {
+        from_name: name,
+        from_email: email,
+        message: message,
+        to_email: "ikgyubae@gmail.com"
+      }).then(function(response) {
+        const successDiv = document.getElementById("successMessage");
+        successDiv.textContent = "✅ 메시지가 성공적으로 전달되었습니다! 감사합니다.";
+        successDiv.classList.add("show");
+
+        document.getElementById("contactForm").reset();
+
+        setTimeout(() => {
+          successDiv.classList.remove("show");
+        }, 3000);
+      }, function(error) {
+        const errorDiv = document.getElementById("errorMessage");
+        errorDiv.textContent = "❌ 메시지 전송에 실패했습니다. 다시 시도해주세요.";
+        errorDiv.classList.add("show");
+
+        setTimeout(() => {
+          errorDiv.classList.remove("show");
+        }, 3000);
+
+        console.error("EmailJS Error:", error);
+      });
+    });
+  </script>
 </body>
 </html>
