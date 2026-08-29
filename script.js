@@ -11,18 +11,18 @@
 // ---------------------------------------------------------
 const CATEGORIES = {
   stock: {
-    label: "주식(종목분석)",
+    label: "Stock Analysis",
     dataUrl: "data/stocks.json",
     listPath: "stock/index.html",
     postPath: "stock/post.html",
   },
   travel: {
-    label: "여행",
+    label: "Travel",
     dataUrl: "data/travel.json",
     listPath: "travel/index.html",
     postPath: "travel/post.html",
   },
-  // news: { label: "뉴스", dataUrl: "data/news.json", listPath: "news/index.html", postPath: "news/post.html" },
+  // news: { label: "News", dataUrl: "data/news.json", listPath: "news/index.html", postPath: "news/post.html" },
 };
 
 // Directory that script.js itself lives in (the site root), regardless of
@@ -89,7 +89,7 @@ function formatDate(dateStr) {
   if (!dateStr) return "";
   const d = new Date(dateStr);
   if (Number.isNaN(d.getTime())) return dateStr;
-  return d.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 }
 
 function cardTemplate(post) {
@@ -113,7 +113,7 @@ function cardTemplate(post) {
         <div class="tags">${tags}</div>
         <div class="card-meta">
           <span>${escapeHtml(formatDate(post.date))}</span>
-          <a class="card-link" href="${escapeHtml(postUrl)}">자세히 보기 →</a>
+          <a class="card-link" href="${escapeHtml(postUrl)}">Read More →</a>
         </div>
       </div>
     </article>
@@ -123,7 +123,7 @@ function cardTemplate(post) {
 function renderCards(container, posts) {
   if (!container) return;
   if (!posts.length) {
-    container.innerHTML = '<p class="empty-state">표시할 글이 없습니다.</p>';
+    container.innerHTML = '<p class="empty-state">No posts to display.</p>';
     return;
   }
   container.innerHTML = posts.map(cardTemplate).join("");
@@ -191,13 +191,13 @@ async function renderPostDetail(categoryKey, containerId) {
   const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
-    container.innerHTML = '<p class="empty-state">해당 글을 찾을 수 없습니다.</p>';
+    container.innerHTML = '<p class="empty-state">The requested post could not be found.</p>';
     return;
   }
 
   document.title = `${escapeHtml(post.title)} | All About the World`;
   const category = CATEGORIES[categoryKey];
-  const secondary = post.ticker ? `종목코드 ${post.ticker}` : post.location || "";
+  const secondary = post.ticker ? `Ticker ${post.ticker}` : post.location || "";
   const body = (post.content || []).map((p) => `<p>${escapeHtml(p)}</p>`).join("");
   const tags = (post.tags || []).map((t) => `<span class="tag">#${escapeHtml(t)}</span>`).join("");
   const link = safeUrl(post.link);
@@ -209,7 +209,7 @@ async function renderPostDetail(categoryKey, containerId) {
     <div class="post-meta">${secondary ? `${escapeHtml(secondary)} · ` : ""}${escapeHtml(formatDate(post.date))}</div>
     <div class="tags">${tags}</div>
     <div class="post-body">${body}</div>
-    ${link ? `<a class="external-link" href="${escapeHtml(link)}" target="_blank" rel="noopener">관련 링크 바로가기</a>` : ""}
+    ${link ? `<a class="external-link" href="${escapeHtml(link)}" target="_blank" rel="noopener">Open Related Link</a>` : ""}
   `;
 }
 
