@@ -1,87 +1,104 @@
 [
   {
     "slug": "samsung-electronics",
-    "title": "삼성전자 (005930) 종목 분석",
+    "title": "Samsung Electronics (005930) Stock Analysis",
     "ticker": "005930",
     "category": "stock",
-    "summary": "메모리 반도체 업황 반등과 파운드리 경쟁력 강화로 주목받는 국내 대표 반도체 기업.",
+    "summary": "South Korea's leading semiconductor company driving growth through memory chip recovery and foundry competitiveness.",
     "image": "https://placehold.co/600x400/1e3a8a/ffffff?text=Samsung+Electronics",
-    "tags": ["반도체", "대형주", "배당주"],
+    "tags": ["semiconductors", "large-cap", "dividend"],
     "date": "2026-08-01",
     "link": "https://finance.naver.com/item/main.naver?code=005930",
     "content": [
-      "삼성전자는 메모리 반도체(D램, 낸드플래시)와 시스템 반도체, 스마트폰(갤럭시), 가전 등 다양한 사업부를 보유한 국내 최대 기업입니다.",
-      "최근 AI 서버향 고대역폭 메모리(HBM) 수요 급증으로 메모리 업황이 개선되고 있으며, 이는 실적 반등의 핵심 동력으로 작용하고 있습니다.",
-      "파운드리 사업부는 여전히 경쟁사 대비 점유율 격차가 있으나, 첨단 공정 수율 개선과 대형 고객사 유치를 통해 반전을 모색하고 있습니다.",
-      "투자 포인트: 1) 메모리 업황 사이클 개선, 2) HBM 등 고부가가치 제품 비중 확대, 3) 안정적인 배당 정책."
+      "Samsung Electronics is South Korea's largest company with diverse business divisions including memory semiconductors (DRAM, NAND Flash), system semiconductors, smartphones (Galaxy), and consumer appliances.",
+      "Recent surge in AI server demand for high-bandwidth memory (HBM) is improving memory chip market conditions, acting as a key driver for earnings recovery.",
+      "The foundry division aims for a turnaround through improved process yields on advanced nodes and securing major customers, despite ongoing competitive challenges.",
+      "Investment points: 1) Memory chip market cycle improvement, 2) Growing share of high-value products like HBM, 3) Stable dividend policy."
     ]
   },
   {
     "slug": "hyundai-motor",
-    "title": "현대차 (005380) 종목 분석",
+    "title": "Hyundai Motor (005380) Stock Analysis",
     "ticker": "005380",
     "category": "stock",
-    "summary": "전기차 전환과 하이브리드 라인업 확대로 글로벌 완성차 시장에서 존재감을 넓히는 현대차.",
+    "summary": "Global automaker expanding presence in worldwide markets through EV transition and hybrid lineup expansion.",
     "image": "https://placehold.co/600x400/dc2626/ffffff?text=Hyundai+Motor",
-    "tags": ["자동차", "전기차", "대형주"],
+    "tags": ["automotive", "electric-vehicles", "large-cap"],
     "date": "2026-08-05",
     "link": "https://finance.naver.com/item/main.naver?code=005380",
     "content": [
-      "현대차는 내연기관차뿐 아니라 전기차(아이오닉 시리즈), 하이브리드 모델까지 폭넓은 라인업을 갖춘 글로벌 완성차 업체입니다.",
-      "북미 시장에서는 하이브리드 차량 판매 호조가 이어지고 있으며, 유럽과 인도 등 신흥 시장 공략도 강화하고 있습니다.",
-      "전동화 전환 과정에서의 원가 절감과 소프트웨어 중심 자동차(SDV) 전략이 향후 밸류에이션의 핵심 변수가 될 전망입니다.",
-      "투자 포인트: 1) 하이브리드 판매 호조, 2) 주주환원 정책 강화, 3) 로보틱스·UAM 등 신사업 확장."
+      "Hyundai Motor operates as a comprehensive global automaker with a broad lineup including internal combustion vehicles, electric vehicles (Ioniq series), and hybrid models.",
+      "North American market continues to show strong hybrid vehicle sales, while the company is intensifying efforts to penetrate European and emerging markets like India.",
+      "Cost reduction during the electrification transition and software-defined vehicle (SDV) strategy will be key valuation drivers going forward.",
+      "Investment points: 1) Strong hybrid sales momentum, 2) Enhanced shareholder return policies, 3) Expansion into new sectors like robotics and UAM."
     ]
   },
   {
     "slug": "sk-hynix",
-    "title": "SK하이닉스 (000660) 종목 분석",
+    "title": "SK Hynix (000660) Stock Analysis",
     "ticker": "000660",
     "category": "stock",
-    "summary": "HBM(고대역폭 메모리) 시장을 선도하며 AI 반도체 수혜를 받는 메모리 반도체 강자.",
+    "summary": "Memory semiconductor leader capturing AI chip benefits by pioneering HBM (high-bandwidth memory) market.",
     "image": "https://placehold.co/600x400/7c3aed/ffffff?text=SK+Hynix",
-    "tags": ["반도체", "AI", "대형주"],
+    "tags": ["semiconductors", "AI", "large-cap"],
     "date": "2026-08-08",
     "link": "https://finance.naver.com/item/main.naver?code=000660",
     "content": [
-      "SK하이닉스는 D램과 낸드플래시를 생산하는 메모리 반도체 전문 기업으로, 최근 HBM 시장에서 글로벌 선두 지위를 확보했습니다.",
-      "엔비디아 등 주요 AI 가속기 업체에 HBM3E를 공급하며 AI 서버 수요 확대의 최대 수혜주로 평가받고 있습니다.",
-      "메모리 가격 상승 사이클과 맞물려 실적 개선 폭이 크게 나타날 것으로 예상됩니다.",
-      "투자 포인트: 1) HBM 시장 점유율 1위, 2) AI 서버향 수요 확대, 3) 메모리 업황 회복 국면."
+      "SK Hynix is a memory semiconductor specialist producing DRAM and NAND Flash, recently establishing global leadership in the HBM market.",
+      "Supplying HBM3E to major AI accelerator companies like NVIDIA positions it as the primary beneficiary of expanding AI server demand.",
+      "Combined with rising memory prices, the earnings improvement cycle is expected to show significant growth.",
+      "Investment points: 1) #1 market share in HBM, 2) Growing AI server demand, 3) Memory chip industry recovery phase."
     ]
   },
   {
     "slug": "naver",
-    "title": "네이버 (035420) 종목 분석",
+    "title": "NAVER (035420) Stock Analysis",
     "ticker": "035420",
     "category": "stock",
-    "summary": "국내 최대 포털과 AI 서비스, 커머스, 콘텐츠 사업을 아우르는 플랫폼 기업.",
+    "summary": "South Korea's leading platform company spanning portal search, AI services, e-commerce, and content.",
     "image": "https://placehold.co/600x400/16a34a/ffffff?text=NAVER",
-    "tags": ["IT", "플랫폼", "AI"],
+    "tags": ["IT", "platforms", "AI"],
     "date": "2026-08-12",
     "link": "https://finance.naver.com/item/main.naver?code=035420",
     "content": [
-      "네이버는 검색, 커머스, 핀테크, 콘텐츠(웹툰), 클라우드 등 다양한 사업 포트폴리오를 보유한 국내 대표 IT 플랫폼 기업입니다.",
-      "자체 초거대 AI 모델(하이퍼클로바X)을 활용한 서비스 고도화로 신규 성장 동력을 확보하고 있습니다.",
-      "커머스 부문은 브랜드스토어, 도착보장 등 물류 경쟁력 강화를 통해 점유율을 확대하고 있습니다.",
-      "투자 포인트: 1) AI 기반 서비스 고도화, 2) 웹툰 등 콘텐츠 사업의 글로벌 확장, 3) 안정적인 광고·커머스 캐시카우."
+      "NAVER is South Korea's representative IT platform company with diverse business portfolio including search, e-commerce, fintech, content (webtoons), and cloud services.",
+      "Leveraging proprietary large-scale AI models (HyperClovaX) to enhance services and secure new growth drivers.",
+      "Commerce division is expanding market share through enhanced logistics competitiveness via brand stores and delivery guarantees.",
+      "Investment points: 1) Service enhancement through AI, 2) Global expansion of webtoon and content business, 3) Stable advertising and e-commerce cash cows."
     ]
   },
   {
     "slug": "kakao",
-    "title": "카카오 (035720) 종목 분석",
+    "title": "Kakao (035720) Stock Analysis",
     "ticker": "035720",
     "category": "stock",
-    "summary": "카카오톡을 기반으로 한 모바일 생태계와 콘텐츠, 핀테크 계열사를 보유한 플랫폼 기업.",
+    "summary": "Platform company building mobile ecosystem on Kakao Talk foundation with content, fintech, and subsidiary portfolio.",
     "image": "https://placehold.co/600x400/facc15/222222?text=Kakao",
-    "tags": ["IT", "플랫폼", "핀테크"],
+    "tags": ["IT", "platforms", "fintech"],
     "date": "2026-08-15",
     "link": "https://finance.naver.com/item/main.naver?code=035720",
     "content": [
-      "카카오는 국민 메신저 카카오톡을 기반으로 광고, 커머스, 콘텐츠, 핀테크(카카오페이) 등 다양한 사업을 영위하는 플랫폼 기업입니다.",
-      "최근 조직 슬림화와 핵심 사업 집중 전략을 통해 수익성 개선을 도모하고 있습니다.",
-      "카카오톡 오픈채팅, AI 기능 강화 등을 통해 플랫폼 체류 시간을 늘리는 전략을 추진 중입니다.",
-      "투자 포인트: 1) 톡비즈 광고 매출 회복, 2) 카카오페이·카카오모빌리티 등 자회사 가치, 3) 비용 효율화에 따른 이익률 개선."
+      "Kakao is a platform company leveraging the national messenger Kakao Talk to operate diverse businesses including advertising, e-commerce, content, and fintech (Kakao Pay).",
+      "Recent organizational streamlining and core business focus strategies aim to improve profitability.",
+      "Strengthening Kakao Talk platform engagement through open chatting and enhanced AI features.",
+      "Investment points: 1) TalkBiz advertising revenue recovery, 2) Value of subsidiaries like Kakao Pay and Kakao Mobility, 3) Margin improvement from cost efficiency."
+    ]
+  },
+  {
+    "slug": "huons-global",
+    "title": "Huons Global (011090) Stock Analysis",
+    "ticker": "011090",
+    "category": "stock",
+    "summary": "Leading pharmaceutical company with strength in API (Active Pharmaceutical Ingredients) and contract manufacturing.",
+    "image": "https://placehold.co/600x400/9333ea/ffffff?text=Huons+Global",
+    "tags": ["pharmaceuticals", "API", "manufacturing"],
+    "date": "2026-08-28",
+    "link": "https://finance.naver.com/item/main.naver?code=011090",
+    "content": [
+      "Huons Global is a leading pharmaceutical company specializing in Active Pharmaceutical Ingredients (APIs), contract manufacturing services, and finished pharmaceutical products.",
+      "The company benefits from growing global demand for high-quality API production and contract manufacturing services, particularly in the Asia-Pacific region.",
+      "With advanced production facilities and strong quality standards, Huons Global is positioned to capture opportunities in the expanding global pharmaceutical outsourcing market.",
+      "Investment points: 1) Growing global API demand, 2) High margins in contract manufacturing, 3) Expansion of production capacity, 4) Strong positioning in pharmaceutical outsourcing market."
     ]
   }
 ]
