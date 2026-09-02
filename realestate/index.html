@@ -263,17 +263,33 @@
         <div class="filter-section">
           <h3>🔍 필터</h3>
           <div class="filter-group">
+            <label>부동산 유형</label>
             <label>
               <input type="checkbox" id="filterApartment" checked />
-              아파트
+              아파트 (A)
             </label>
             <label>
               <input type="checkbox" id="filterHouse" />
-              주택
+              주택 (H)
             </label>
             <label>
-              <input type="checkbox" id="filterCommercial" />
-              상업용
+              <input type="checkbox" id="filterVilla" />
+              빌라 (V)
+            </label>
+          </div>
+          <div class="filter-group">
+            <label>거래유형</label>
+            <label>
+              <input type="checkbox" id="filterDealType_매매" checked />
+              매매
+            </label>
+            <label>
+              <input type="checkbox" id="filterDealType_전세" checked />
+              전세
+            </label>
+            <label>
+              <input type="checkbox" id="filterDealType_월세" checked />
+              월세
             </label>
           </div>
           <div class="filter-group">
@@ -300,7 +316,7 @@
             <table class="data-table" id="realestateTable">
               <thead>
                 <tr>
-                  <th>유형</th>
+                  <th>거래유형</th>
                   <th>아파트명</th>
                   <th>가격 (만원)</th>
                   <th>면적 (m²)</th>
@@ -365,42 +381,75 @@
     function loadSampleData() {
       allTransactionData = [
         {
-          "type": "아파트",
+          "type": "A",
+          "dealType": "매매",
           "address": "위례 1차 아파트",
           "price": 50000,
           "area": 120,
           "date": "2026-09-02"
         },
         {
-          "type": "아파트",
+          "type": "A",
+          "dealType": "전세",
           "address": "위례 2차 아파트",
-          "price": 55000,
+          "price": 30000,
           "area": 130,
           "date": "2026-09-01"
         },
         {
-          "type": "아파트",
+          "type": "A",
+          "dealType": "월세",
           "address": "위례 3차 아파트",
-          "price": 48000,
+          "price": 2500,
           "area": 115,
           "date": "2026-08-31"
         },
         {
-          "type": "주택",
+          "type": "H",
+          "dealType": "매매",
           "address": "위례 단독주택",
           "price": 35000,
           "area": 100,
           "date": "2026-08-30"
         },
         {
-          "type": "아파트",
+          "type": "A",
+          "dealType": "매매",
           "address": "위례 프리미엄 아파트",
           "price": 65000,
           "area": 145,
           "date": "2026-08-29"
+        },
+        {
+          "type": "A",
+          "dealType": "전세",
+          "address": "위례 센트럴 아파트",
+          "price": 28000,
+          "area": 125,
+          "date": "2026-08-28"
+        },
+        {
+          "type": "V",
+          "dealType": "월세",
+          "address": "위례 빌라",
+          "price": 2800,
+          "area": 110,
+          "date": "2026-08-27"
+        },
+        {
+          "type": "H",
+          "dealType": "전세",
+          "address": "위례 타운하우스",
+          "price": 25000,
+          "area": 105,
+          "date": "2026-08-26"
         }
       ];
       displayData();
+    }
+
+    function formatDealType(dealType, type) {
+      return `${dealType}(${type})`;
     }
 
     function updateStats() {
@@ -453,7 +502,7 @@
       filteredData.forEach(item => {
         const row = tbody.insertRow();
         row.innerHTML = `
-          <td>${item.type}</td>
+          <td>${formatDealType(item.dealType, item.type)}</td>
           <td>${item.address}</td>
           <td class="price-highlight">${item.price.toLocaleString()}</td>
           <td>${item.area}</td>
@@ -465,19 +514,29 @@
     function applyFilters() {
       const apartment = document.getElementById('filterApartment').checked;
       const house = document.getElementById('filterHouse').checked;
-      const commercial = document.getElementById('filterCommercial').checked;
+      const villa = document.getElementById('filterVilla').checked;
+      
+      const dealTypeMae = document.getElementById('filterDealType_매매').checked;
+      const dealTypeJeon = document.getElementById('filterDealType_전세').checked;
+      const dealTypeWol = document.getElementById('filterDealType_월세').checked;
+      
       const minPrice = parseInt(document.getElementById('minPrice').value) || 0;
       const maxPrice = parseInt(document.getElementById('maxPrice').value) || 999999;
 
       filteredData = allTransactionData.filter(item => {
         const typeMatch = 
-          (apartment && item.type === '아파트') ||
-          (house && item.type === '주택') ||
-          (commercial && item.type === '상업용');
+          (apartment && item.type === 'A') ||
+          (house && item.type === 'H') ||
+          (villa && item.type === 'V');
+        
+        const dealTypeMatch = 
+          (dealTypeMae && item.dealType === '매매') ||
+          (dealTypeJeon && item.dealType === '전세') ||
+          (dealTypeWol && item.dealType === '월세');
         
         const priceMatch = item.price >= minPrice && item.price <= maxPrice;
         
-        return typeMatch && priceMatch;
+        return typeMatch && dealTypeMatch && priceMatch;
       });
 
       updateTable();
