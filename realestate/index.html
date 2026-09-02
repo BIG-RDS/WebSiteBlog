@@ -77,6 +77,12 @@
       color: #333;
     }
 
+    .last-updated {
+      font-size: 0.85rem;
+      color: #999;
+      margin-right: 0.5rem;
+    }
+
     .table-scroll {
       overflow-y: auto;
       max-height: 500px;
@@ -177,6 +183,16 @@
       opacity: 0.9;
     }
 
+    .auto-update-badge {
+      display: inline-block;
+      background: #28a745;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+
     @media (max-width: 1024px) {
       .realestate-container {
         grid-template-columns: 1fr;
@@ -218,8 +234,8 @@
 
   <section class="hero">
     <div class="container">
-      <h1>Real Estate Transactions</h1>
-      <p>Latest real estate transaction information for Yurye, Seongnam-si, Bundang-gu</p>
+      <h1>부동산 실거래가</h1>
+      <p>위례 지역 최신 실거래 정보</p>
     </div>
   </section>
 
@@ -227,17 +243,17 @@
     <section class="section">
       <div class="stats-section">
         <div class="stat-card">
-          <div class="stat-label">Max Price</div>
+          <div class="stat-label">최고가</div>
           <div class="stat-value" id="maxPriceDisplay">-</div>
           <div class="stat-label">만원</div>
         </div>
         <div class="stat-card avg">
-          <div class="stat-label">Avg Price</div>
+          <div class="stat-label">평균가</div>
           <div class="stat-value" id="avgPriceDisplay">-</div>
           <div class="stat-label">만원</div>
         </div>
         <div class="stat-card count">
-          <div class="stat-label">Total Records</div>
+          <div class="stat-label">총 건수</div>
           <div class="stat-value" id="recordCountDisplay">-</div>
           <div class="stat-label">건</div>
         </div>
@@ -245,51 +261,55 @@
 
       <div class="realestate-container">
         <div class="filter-section">
-          <h3>🔍 Filters</h3>
+          <h3>🔍 필터</h3>
           <div class="filter-group">
             <label>
               <input type="checkbox" id="filterApartment" checked />
-              Apartment
+              아파트
             </label>
             <label>
               <input type="checkbox" id="filterHouse" />
-              House
+              주택
             </label>
             <label>
               <input type="checkbox" id="filterCommercial" />
-              Commercial
+              상업용
             </label>
           </div>
           <div class="filter-group">
-            <label>Min Price (만원)</label>
+            <label>최소 가격 (만원)</label>
             <input type="text" id="minPrice" placeholder="0" />
           </div>
           <div class="filter-group">
-            <label>Max Price (만원)</label>
+            <label>최대 가격 (만원)</label>
             <input type="text" id="maxPrice" placeholder="999999" />
           </div>
-          <button class="btn-submit" id="applyFiltersBtn" style="width: 100%;">Apply Filters</button>
+          <button class="btn-submit" id="applyFiltersBtn" style="width: 100%;">필터 적용</button>
         </div>
 
         <div class="table-section">
           <div class="table-header">
-            <h3>📋 Transaction Records</h3>
+            <div>
+              <h3>📋 실거래 정보</h3>
+              <span class="last-updated" id="lastUpdated"></span>
+              <span class="auto-update-badge">🔄 매일 자동 업데이트</span>
+            </div>
             <span id="recordCount" style="color: #666; font-size: 0.9rem;"></span>
           </div>
           <div class="table-scroll">
             <table class="data-table" id="realestateTable">
               <thead>
                 <tr>
-                  <th>Type</th>
-                  <th>Address</th>
-                  <th>Price (만원)</th>
-                  <th>Area (m²)</th>
-                  <th>Date</th>
+                  <th>유형</th>
+                  <th>주소</th>
+                  <th>가격 (만원)</th>
+                  <th>면적 (m²)</th>
+                  <th>거래일</th>
                 </tr>
               </thead>
               <tbody id="realestateTableBody">
                 <tr>
-                  <td colspan="5" class="loading">Loading data from Korea Real Estate Board...</td>
+                  <td colspan="5" class="loading">데이터 로딩 중...</td>
                 </tr>
               </tbody>
             </table>
@@ -321,58 +341,23 @@
   </footer>
 
   <script>
-    const KOREA_REALESTATE_API_KEY = "917b3e0dec8442b0a8510864bea67ec5";
-    
     let allTransactionData = [];
     let filteredData = [];
 
-    // Fetch Real Estate Data
+    // Fetch Real Estate Data from JSON
     async function fetchRealEstateData() {
       try {
-        // Using Korea Real Estate Board API
-        const response = await fetch(
-          `https://apis.data.go.kr/1613000/RTMSDataSvcApt/getRTMSDataSvcAptTradeDev?serviceKey=${KOREA_REALESTATE_API_KEY}&LAWD_CD=41135&DEAL_YMD=202609&numOfRows=100&pageNo=1`,
-          {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/xml'
-            }
-          }
-        );
-
+        const response = await fetch('./data.json');
+        
         if (response.ok) {
-          const xmlText = await response.text();
-          parseRealEstateXML(xmlText);
+          allTransactionData = await response.json();
+          displayData();
         } else {
+          console.error('Failed to load data');
           loadSampleData();
         }
       } catch (error) {
-        console.log("Using sample data...");
-        loadSampleData();
-      }
-    }
-
-    function parseRealEstateXML(xmlText) {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-      const items = xmlDoc.getElementsByTagName('item');
-
-      allTransactionData = [];
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const data = {
-          type: 'Apartment',
-          address: `${item.getElementsByTagName('법정동')[0]?.textContent || ''} ${item.getElementsByTagName('아파트명')[0]?.textContent || ''}`,
-          price: parseInt(item.getElementsByTagName('거래금액')[0]?.textContent || '0'),
-          area: parseFloat(item.getElementsByTagName('건축면적')[0]?.textContent || '0'),
-          date: item.getElementsByTagName('거래일자')[0]?.textContent || ''
-        };
-        allTransactionData.push(data);
-      }
-
-      if (allTransactionData.length > 0) {
-        displayData();
-      } else {
+        console.error('Error loading data:', error);
         loadSampleData();
       }
     }
@@ -380,60 +365,39 @@
     function loadSampleData() {
       allTransactionData = [
         {
-          type: 'Apartment',
-          address: 'Yurye 1-cha Apts',
-          price: 50000,
-          area: 120,
-          date: '2026-09-02'
+          "type": "아파트",
+          "address": "위례 1차 아파트",
+          "price": 50000,
+          "area": 120,
+          "date": "2026-09-02"
         },
         {
-          type: 'Apartment',
-          address: 'Yurye 2-cha Apts',
-          price: 55000,
-          area: 130,
-          date: '2026-09-01'
+          "type": "아파트",
+          "address": "위례 2차 아파트",
+          "price": 55000,
+          "area": 130,
+          "date": "2026-09-01"
         },
         {
-          type: 'Apartment',
-          address: 'Yurye 3-cha Apts',
-          price: 48000,
-          area: 115,
-          date: '2026-08-31'
+          "type": "아파트",
+          "address": "위례 3차 아파트",
+          "price": 48000,
+          "area": 115,
+          "date": "2026-08-31"
         },
         {
-          type: 'House',
-          address: 'Single House, Yurye',
-          price: 35000,
-          area: 100,
-          date: '2026-08-30'
+          "type": "주택",
+          "address": "위례 단독주택",
+          "price": 35000,
+          "area": 100,
+          "date": "2026-08-30"
         },
         {
-          type: 'Apartment',
-          address: 'Yurye Premium Apts',
-          price: 65000,
-          area: 145,
-          date: '2026-08-29'
-        },
-        {
-          type: 'Apartment',
-          address: 'Yurye Central Apts',
-          price: 52000,
-          area: 125,
-          date: '2026-08-28'
-        },
-        {
-          type: 'Apartment',
-          address: 'Yurye 4-cha Apts',
-          price: 51000,
-          area: 122,
-          date: '2026-08-27'
-        },
-        {
-          type: 'House',
-          address: 'Townhouse, Yurye',
-          price: 38000,
-          area: 105,
-          date: '2026-08-26'
+          "type": "아파트",
+          "address": "위례 프리미엄 아파트",
+          "price": 65000,
+          "area": 145,
+          "date": "2026-08-29"
         }
       ];
       displayData();
@@ -456,11 +420,25 @@
       document.getElementById('recordCountDisplay').textContent = filteredData.length;
     }
 
+    function updateLastUpdated() {
+      if (allTransactionData.length > 0) {
+        const newestDate = allTransactionData[0].date;
+        const dateObj = new Date(newestDate + 'T00:00:00');
+        const formattedDate = dateObj.toLocaleDateString('ko-KR', { 
+          year: 'numeric', 
+          month: 'short', 
+          day: 'numeric' 
+        });
+        document.getElementById('lastUpdated').textContent = `최종 업데이트: ${formattedDate}`;
+      }
+    }
+
     function displayData() {
       filteredData = allTransactionData;
       updateTable();
       updateStats();
-      document.getElementById('recordCount').textContent = `Total: ${filteredData.length} records`;
+      updateLastUpdated();
+      document.getElementById('recordCount').textContent = `총 ${filteredData.length}건`;
     }
 
     function updateTable() {
@@ -468,7 +446,7 @@
       tbody.innerHTML = '';
 
       if (filteredData.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No data found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">검색 결과가 없습니다</td></tr>';
         return;
       }
 
@@ -493,9 +471,9 @@
 
       filteredData = allTransactionData.filter(item => {
         const typeMatch = 
-          (apartment && item.type === 'Apartment') ||
-          (house && item.type === 'House') ||
-          (commercial && item.type === 'Commercial');
+          (apartment && item.type === '아파트') ||
+          (house && item.type === '주택') ||
+          (commercial && item.type === '상업용');
         
         const priceMatch = item.price >= minPrice && item.price <= maxPrice;
         
@@ -504,7 +482,7 @@
 
       updateTable();
       updateStats();
-      document.getElementById('recordCount').textContent = `Total: ${filteredData.length} records`;
+      document.getElementById('recordCount').textContent = `총 ${filteredData.length}건`;
     }
 
     document.getElementById('applyFiltersBtn').addEventListener('click', applyFilters);
