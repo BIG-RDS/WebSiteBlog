@@ -113,14 +113,17 @@
         }, 3000);
       }, function(error) {
         const errorDiv = document.getElementById("errorMessage");
-        errorDiv.textContent = "❌ Failed to send message. Please try again.";
+        const errorMsg = error.text || error.message || "Failed to send message";
+        errorDiv.textContent = "❌ Error: " + errorMsg;
         errorDiv.classList.add("show");
 
         setTimeout(() => {
           errorDiv.classList.remove("show");
         }, 3000);
 
-        console.error("EmailJS Error:", error);
+        console.error("EmailJS Error Details:", error);
+        console.error("Error Text:", error.text);
+        console.error("Error Message:", error.message);
       });
     });
   </script>
