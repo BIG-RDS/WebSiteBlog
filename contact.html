@@ -95,12 +95,12 @@
       const message = document.getElementById("message").value;
       const time = new Date().toLocaleString();
 
-      emailjs.send("service_tiyyl6l", "template_0wykli4", {
+      emailjs.send("service_tiyyl6l","template_0wykli4",{
         name: name,
-        email: email,
-        title: title,
+        time: time,
         message: message,
-        time: time
+        title: title,
+        email: email,
       }).then(function(response) {
         const successDiv = document.getElementById("successMessage");
         successDiv.textContent = "✅ Your message has been sent successfully! Thank you.";
