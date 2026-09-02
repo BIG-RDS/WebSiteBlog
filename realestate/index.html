@@ -245,12 +245,12 @@
         <div class="stat-card">
           <div class="stat-label">최고가</div>
           <div class="stat-value" id="maxPriceDisplay">-</div>
-          <div class="stat-label">만원</div>
+          <div class="stat-label">백만</div>
         </div>
         <div class="stat-card avg">
           <div class="stat-label">평균가</div>
           <div class="stat-value" id="avgPriceDisplay">-</div>
-          <div class="stat-label">만원</div>
+          <div class="stat-label">백만</div>
         </div>
         <div class="stat-card count">
           <div class="stat-label">총 건수</div>
@@ -293,11 +293,11 @@
             </label>
           </div>
           <div class="filter-group">
-            <label>최소 가격 (만원)</label>
+            <label>최소 가격 (백만)</label>
             <input type="text" id="minPrice" placeholder="0" />
           </div>
           <div class="filter-group">
-            <label>최대 가격 (만원)</label>
+            <label>최대 가격 (백만)</label>
             <input type="text" id="maxPrice" placeholder="999999" />
           </div>
           <button class="btn-submit" id="applyFiltersBtn" style="width: 100%;">필터 적용</button>
@@ -318,7 +318,7 @@
                 <tr>
                   <th>거래유형</th>
                   <th>아파트명</th>
-                  <th>가격 (만원)</th>
+                  <th>가격 (백만)</th>
                   <th>면적 (m²)</th>
                   <th>거래일</th>
                 </tr>
@@ -452,6 +452,15 @@
       return `${dealType}(${type})`;
     }
 
+    function formatDate(dateString) {
+      const [year, month, day] = dateString.split('-');
+      return `${year}/${month}/${day}`;
+    }
+
+    function formatPrice(price) {
+      return Math.round(price / 100);
+    }
+
     function updateStats() {
       if (filteredData.length === 0) {
         document.getElementById('maxPriceDisplay').textContent = '-';
@@ -462,22 +471,17 @@
 
       const prices = filteredData.map(d => d.price);
       const maxPrice = Math.max(...prices);
-      const avgPrice = Math.round(prices.reduce((a, b) => a + b, 0) / prices.length);
+      const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
       
-      document.getElementById('maxPriceDisplay').textContent = maxPrice.toLocaleString();
-      document.getElementById('avgPriceDisplay').textContent = avgPrice.toLocaleString();
+      document.getElementById('maxPriceDisplay').textContent = formatPrice(maxPrice).toLocaleString();
+      document.getElementById('avgPriceDisplay').textContent = Math.round(formatPrice(avgPrice)).toLocaleString();
       document.getElementById('recordCountDisplay').textContent = filteredData.length;
     }
 
     function updateLastUpdated() {
       if (allTransactionData.length > 0) {
         const newestDate = allTransactionData[0].date;
-        const dateObj = new Date(newestDate + 'T00:00:00');
-        const formattedDate = dateObj.toLocaleDateString('ko-KR', { 
-          year: 'numeric', 
-          month: 'short', 
-          day: 'numeric' 
-        });
+        const formattedDate = formatDate(newestDate);
         document.getElementById('lastUpdated').textContent = `최종 업데이트: ${formattedDate}`;
       }
     }
@@ -504,9 +508,9 @@
         row.innerHTML = `
           <td>${formatDealType(item.dealType, item.type)}</td>
           <td>${item.address}</td>
-          <td class="price-highlight">${item.price.toLocaleString()}</td>
+          <td class="price-highlight">${formatPrice(item.price).toLocaleString()}</td>
           <td>${item.area}</td>
-          <td><span class="date-small">${item.date}</span></td>
+          <td><span class="date-small">${formatDate(item.date)}</span></td>
         `;
       });
     }
@@ -520,8 +524,8 @@
       const dealTypeJeon = document.getElementById('filterDealType_전세').checked;
       const dealTypeWol = document.getElementById('filterDealType_월세').checked;
       
-      const minPrice = parseInt(document.getElementById('minPrice').value) || 0;
-      const maxPrice = parseInt(document.getElementById('maxPrice').value) || 999999;
+      const minPrice = (parseInt(document.getElementById('minPrice').value) || 0) * 100;
+      const maxPrice = (parseInt(document.getElementById('maxPrice').value) || 999999) * 100;
 
       filteredData = allTransactionData.filter(item => {
         const typeMatch = 
