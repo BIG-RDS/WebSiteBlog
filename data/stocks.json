@@ -1,0 +1,104 @@
+[
+  {
+    "slug": "samsung-electronics",
+    "title": "Samsung Electronics (005930) Stock Analysis",
+    "ticker": "005930",
+    "category": "stock",
+    "summary": "South Korea's leading semiconductor company driving growth through memory chip recovery and foundry competitiveness.",
+    "image": "https://placehold.co/600x400/1e3a8a/ffffff?text=Samsung+Electronics",
+    "tags": ["semiconductors", "large-cap", "dividend"],
+    "date": "2026-08-01",
+    "link": "https://finance.naver.com/item/main.naver?code=005930",
+    "content": [
+      "Samsung Electronics is South Korea's largest company with diverse business divisions including memory semiconductors (DRAM, NAND Flash), system semiconductors, smartphones (Galaxy), and consumer appliances.",
+      "Recent surge in AI server demand for high-bandwidth memory (HBM) is improving memory chip market conditions, acting as a key driver for earnings recovery.",
+      "The foundry division aims for a turnaround through improved process yields on advanced nodes and securing major customers, despite ongoing competitive challenges.",
+      "Investment points: 1) Memory chip market cycle improvement, 2) Growing share of high-value products like HBM, 3) Stable dividend policy."
+    ]
+  },
+  {
+    "slug": "hyundai-motor",
+    "title": "Hyundai Motor (005380) Stock Analysis",
+    "ticker": "005380",
+    "category": "stock",
+    "summary": "Global automaker expanding presence in worldwide markets through EV transition and hybrid lineup expansion.",
+    "image": "https://placehold.co/600x400/dc2626/ffffff?text=Hyundai+Motor",
+    "tags": ["automotive", "electric-vehicles", "large-cap"],
+    "date": "2026-08-05",
+    "link": "https://finance.naver.com/item/main.naver?code=005380",
+    "content": [
+      "Hyundai Motor operates as a comprehensive global automaker with a broad lineup including internal combustion vehicles, electric vehicles (Ioniq series), and hybrid models.",
+      "North American market continues to show strong hybrid vehicle sales, while the company is intensifying efforts to penetrate European and emerging markets like India.",
+      "Cost reduction during the electrification transition and software-defined vehicle (SDV) strategy will be key valuation drivers going forward.",
+      "Investment points: 1) Strong hybrid sales momentum, 2) Enhanced shareholder return policies, 3) Expansion into new sectors like robotics and UAM."
+    ]
+  },
+  {
+    "slug": "sk-hynix",
+    "title": "SK Hynix (000660) Stock Analysis",
+    "ticker": "000660",
+    "category": "stock",
+    "summary": "Memory semiconductor leader capturing AI chip benefits by pioneering HBM (high-bandwidth memory) market.",
+    "image": "https://placehold.co/600x400/7c3aed/ffffff?text=SK+Hynix",
+    "tags": ["semiconductors", "AI", "large-cap"],
+    "date": "2026-08-08",
+    "link": "https://finance.naver.com/item/main.naver?code=000660",
+    "content": [
+      "SK Hynix is a memory semiconductor specialist producing DRAM and NAND Flash, recently establishing global leadership in the HBM market.",
+      "Supplying HBM3E to major AI accelerator companies like NVIDIA positions it as the primary beneficiary of expanding AI server demand.",
+      "Combined with rising memory prices, the earnings improvement cycle is expected to show significant growth.",
+      "Investment points: 1) #1 market share in HBM, 2) Growing AI server demand, 3) Memory chip industry recovery phase."
+    ]
+  },
+  {
+    "slug": "naver",
+    "title": "NAVER (035420) Stock Analysis",
+    "ticker": "035420",
+    "category": "stock",
+    "summary": "South Korea's leading platform company spanning portal search, AI services, e-commerce, and content.",
+    "image": "https://placehold.co/600x400/16a34a/ffffff?text=NAVER",
+    "tags": ["IT", "platforms", "AI"],
+    "date": "2026-08-12",
+    "link": "https://finance.naver.com/item/main.naver?code=035420",
+    "content": [
+      "NAVER is South Korea's representative IT platform company with diverse business portfolio including search, e-commerce, fintech, content (webtoons), and cloud services.",
+      "Leveraging proprietary large-scale AI models (HyperClovaX) to enhance services and secure new growth drivers.",
+      "Commerce division is expanding market share through enhanced logistics competitiveness via brand stores and delivery guarantees.",
+      "Investment points: 1) Service enhancement through AI, 2) Global expansion of webtoon and content business, 3) Stable advertising and e-commerce cash cows."
+    ]
+  },
+  {
+    "slug": "kakao",
+    "title": "Kakao (035720) Stock Analysis",
+    "ticker": "035720",
+    "category": "stock",
+    "summary": "Platform company building mobile ecosystem on Kakao Talk foundation with content, fintech, and subsidiary portfolio.",
+    "image": "https://placehold.co/600x400/facc15/222222?text=Kakao",
+    "tags": ["IT", "platforms", "fintech"],
+    "date": "2026-08-15",
+    "link": "https://finance.naver.com/item/main.naver?code=035720",
+    "content": [
+      "Kakao is a platform company leveraging the national messenger Kakao Talk to operate diverse businesses including advertising, e-commerce, content, and fintech (Kakao Pay).",
+      "Recent organizational streamlining and core business focus strategies aim to improve profitability.",
+      "Strengthening Kakao Talk platform engagement through open chatting and enhanced AI features.",
+      "Investment points: 1) TalkBiz advertising revenue recovery, 2) Value of subsidiaries like Kakao Pay and Kakao Mobility, 3) Margin improvement from cost efficiency."
+    ]
+  },
+  {
+    "slug": "huons-global",
+    "title": "Huons Global (011090) Stock Analysis",
+    "ticker": "011090",
+    "category": "stock",
+    "summary": "Leading pharmaceutical company with strength in API (Active Pharmaceutical Ingredients) and contract manufacturing.",
+    "image": "https://placehold.co/600x400/9333ea/ffffff?text=Huons+Global",
+    "tags": ["pharmaceuticals", "API", "manufacturing"],
+    "date": "2026-08-28",
+    "link": "https://finance.naver.com/item/main.naver?code=011090",
+    "content": [
+      "Huons Global is a leading pharmaceutical company specializing in Active Pharmaceutical Ingredients (APIs), contract manufacturing services, and finished pharmaceutical products.",
+      "The company benefits from growing global demand for high-quality API production and contract manufacturing services, particularly in the Asia-Pacific region.",
+      "With advanced production facilities and strong quality standards, Huons Global is positioned to capture opportunities in the expanding global pharmaceutical outsourcing market.",
+      "Investment points: 1) Growing global API demand, 2) High margins in contract manufacturing, 3) Expansion of production capacity, 4) Strong positioning in pharmaceutical outsourcing market."
+    ]
+  }
+]

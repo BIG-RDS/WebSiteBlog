@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Analysis | All About the World</title>
+  <meta name="description" content="Analysis of various stocks including Samsung Electronics, Hyundai Motor, SK Hynix, and more." />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-lockup">
+        <a class="site-logo" href="../index.html">All About <span>the World</span></a>
+        <a class="site-domain" href="https://airsky.com/">airsky.com</a>
+      </div>
+      <nav class="site-nav" id="mainNav">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html" class="active">Stock Analysis</a></li>
+          <li><a href="../realestate/index.html">Real Estate</a></li>
+          <li><a href="../travel/index.html">Travel</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Stock Analysis</h1>
+      <p>Explore analysis of major domestic stocks.</p>
+      <form class="search-bar" onsubmit="return false;">
+        <input type="text" id="stockSearch" placeholder="Search by stock name or tag" />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="section">
+      <div class="card-grid" id="stockCardGrid">
+        <p class="empty-state">Loading...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <h3>All About the World</h3>
+        <p>We curate information about everything in the world.</p>
+        <div class="social-links">
+          <a href="mailto:ikgyubae@gmail.com">Email</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <ul>
+          <li><a href="index.html">Stock Analysis</a></li>
+          <li><a href="../realestate/index.html">Real Estate</a></li>
+          <li><a href="../travel/index.html">Travel</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 All About the World. All rights reserved.</div>
+  </footer>
+
+  <script src="../script.js"></script>
+  <script>
+    setupSearchAndFilter({
+      searchInputId: "stockSearch",
+      filterBarId: null,
+      cardGridId: "stockCardGrid",
+      getAllPosts: () => fetchCategoryData("stock"),
+    });
+  </script>
+</body>
+</html>
