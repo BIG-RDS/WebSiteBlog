@@ -1,57 +1,65 @@
 [
   {
-    "type": "Apartment",
+    "type": "A",
+    "dealType": "매매",
     "address": "위례 1차 아파트",
     "price": 50000,
     "area": 120,
     "date": "2026-09-02"
   },
   {
-    "type": "Apartment",
+    "type": "A",
+    "dealType": "전세",
     "address": "위례 2차 아파트",
-    "price": 55000,
+    "price": 30000,
     "area": 130,
     "date": "2026-09-01"
   },
   {
-    "type": "Apartment",
+    "type": "A",
+    "dealType": "월세",
     "address": "위례 3차 아파트",
-    "price": 48000,
+    "price": 2500,
     "area": 115,
     "date": "2026-08-31"
   },
   {
-    "type": "House",
+    "type": "H",
+    "dealType": "매매",
     "address": "위례 단독주택",
     "price": 35000,
     "area": 100,
     "date": "2026-08-30"
   },
   {
-    "type": "Apartment",
+    "type": "A",
+    "dealType": "매매",
     "address": "위례 프리미엄 아파트",
     "price": 65000,
     "area": 145,
     "date": "2026-08-29"
   },
   {
-    "type": "Apartment",
+    "type": "A",
+    "dealType": "전세",
     "address": "위례 센트럴 아파트",
-    "price": 52000,
+    "price": 28000,
     "area": 125,
     "date": "2026-08-28"
   },
   {
-    "type": "Apartment",
-    "address": "위례 4차 아파트",
-    "price": 51000,
-    "area": 122,
+    "type": "V",
+    "dealType": "월세",
+    "address": "위례 빌라",
+    "price": 2800,
+    "area": 110,
     "date": "2026-08-27"
   },
   {
-    "type": "House",
+    "type": "H",
+    "dealType": "전세",
     "address": "위례 타운하우스",
-    "price": 38000,
+    "price": 25000,
     "area": 105,
     "date": "2026-08-26"
   }
