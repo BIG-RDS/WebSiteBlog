@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Real Estate | All About the World</title>
-  <meta name="description" content="Real estate transaction information for Yurye, Seongnam-si, Bundang-gu from the Korea Real Estate Board." />
+  <meta name="description" content="Real estate transaction information from the Korea Real Estate Board." />
   <link rel="stylesheet" href="../style.css" />
   <style>
     .realestate-container {
@@ -43,15 +43,65 @@
     }
 
     .filter-group input[type="checkbox"],
-    .filter-group input[type="text"] {
+    .filter-group input[type="text"],
+    .filter-group select {
       padding: 0.5rem;
       border: 1px solid #ddd;
       border-radius: 4px;
       font-size: 0.95rem;
     }
 
-    .filter-group input[type="text"] {
+    .filter-group input[type="text"],
+    .filter-group select {
       width: 100%;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-submit {
+      flex: 1;
+      padding: 0.75rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.3s;
+    }
+
+    .btn-submit:hover {
+      background: #0056b3;
+    }
+
+    .btn-submit:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .btn-refresh {
+      flex: 1;
+      padding: 0.75rem;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.3s;
+    }
+
+    .btn-refresh:hover {
+      background: #218838;
+    }
+
+    .btn-refresh:disabled {
+      background: #ccc;
+      cursor: not-allowed;
     }
 
     .table-section {
@@ -193,12 +243,59 @@
       margin-left: 0.5rem;
     }
 
+    .alert {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .alert.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+
+    .alert.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+
+    .alert.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+      display: block;
+    }
+
+    .location-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .location-selector select {
+      width: 100%;
+    }
+
     @media (max-width: 1024px) {
       .realestate-container {
         grid-template-columns: 1fr;
       }
 
       .stats-section {
+        grid-template-columns: 1fr;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .location-selector {
         grid-template-columns: 1fr;
       }
 
@@ -235,12 +332,14 @@
   <section class="hero">
     <div class="container">
       <h1>부동산 실거래가</h1>
-      <p>위례 지역 최신 실거래 정보</p>
+      <p>지역별 최신 실거래 정보</p>
     </div>
   </section>
 
   <main class="container">
     <section class="section">
+      <div id="alertMessage" class="alert"></div>
+
       <div class="stats-section">
         <div class="stat-card">
           <div class="stat-label">최고가</div>
@@ -262,6 +361,43 @@
       <div class="realestate-container">
         <div class="filter-section">
           <h3>🔍 필터</h3>
+          
+          <div class="filter-group">
+            <label>지역 선택</label>
+            <div class="location-selector">
+              <select id="provinceSelect">
+                <option value="">시/도 선택</option>
+                <option value="11">서울</option>
+                <option value="26">부산</option>
+                <option value="27">대구</option>
+                <option value="28">인천</option>
+                <option value="29">광주</option>
+                <option value="30">대전</option>
+                <option value="31">울산</option>
+                <option value="36">세종</option>
+                <option value="41">경기</option>
+                <option value="42">강원</option>
+                <option value="43">충북</option>
+                <option value="44">충남</option>
+                <option value="45">전북</option>
+                <option value="46">전남</option>
+                <option value="47">경북</option>
+                <option value="48">경남</option>
+                <option value="50">제주</option>
+              </select>
+              <select id="districtSelect" disabled>
+                <option value="">구/시 선택</option>
+              </select>
+              <select id="townSelect" disabled>
+                <option value="">동/읍/면 선택</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button class="btn-refresh" id="refreshDataBtn">🔄 최신정보가져오기</button>
+          </div>
+
           <div class="filter-group">
             <label>부동산 유형</label>
             <label>
@@ -300,7 +436,7 @@
             <label>최대 가격 (백만)</label>
             <input type="text" id="maxPrice" placeholder="999999" />
           </div>
-          <button class="btn-submit" id="applyFiltersBtn" style="width: 100%;">필터 적용</button>
+          <button class="btn-submit" id="applyFiltersBtn">필터 적용</button>
         </div>
 
         <div class="table-section">
@@ -308,7 +444,7 @@
             <div>
               <h3>실거래 정보</h3>
               <span class="last-updated" id="lastUpdated"></span>
-              <span class="auto-update-badge">🔄 매일 자동 업데이트</span>
+              <span class="auto-update-badge">부동산원 API</span>
             </div>
             <span id="recordCount" style="color: #666; font-size: 0.9rem;"></span>
           </div>
@@ -325,7 +461,7 @@
               </thead>
               <tbody id="realestateTableBody">
                 <tr>
-                  <td colspan="5" class="loading">데이터 로딩 중...</td>
+                  <td colspan="5" class="loading">지역을 선택해주세요</td>
                 </tr>
               </tbody>
             </table>
@@ -359,102 +495,127 @@
   <script>
     let allTransactionData = [];
     let filteredData = [];
+    const API_KEY = '917b3e0dec8442b0a8510864bea67ec5';
+    
+    const locationData = {
+      '11': { name: '서울', districts: { '11010': '종로구', '11020': '중구', '11030': '용산구', '11040': '성동구', '11050': '광진구', '11060': '동대문구', '11070': '중랑구', '11080': '성북구', '11090': '강북구', '11100': '도봉구', '11110': '노원구', '11120': '은평구', '11130': '서대문구', '11140': '마포구', '11150': '양천구', '11160': '강서구', '11170': '구로구', '11180': '금천구', '11190': '영등포구', '11200': '동작구', '11210': '관악구', '11220': '서초구', '11230': '강남구', '11240': '송파구', '11250': '강동구' } },
+      '26': { name: '부산', districts: { '26110': '중구', '26140': '서구', '26170': '동구', '26200': '영도구', '26230': '부산진구', '26260': '동래구', '26290': '남구', '26320': '북구', '26350': '해운대구', '26380': '사상구', '26410': '금정구', '26440': '강서구', '26710': '연제구', '26740': '수영구', '26770': '사하구', '26800': '기장군' } },
+      '41': { name: '경기', districts: { '41135': '성남시', '41131': '수원시', '41189': '안양시', '41205': '부천시', '41210': '광명시' } }
+    };
 
-    // Fetch Real Estate Data from JSON
-    async function fetchRealEstateData() {
-      try {
-        const response = await fetch('./data.json');
-        
-        if (response.ok) {
-          allTransactionData = await response.json();
-          displayData();
-        } else {
-          console.error('Failed to load data');
-          loadSampleData();
+    function showAlert(message, type = 'info') {
+      const alertDiv = document.getElementById('alertMessage');
+      alertDiv.textContent = message;
+      alertDiv.className = `alert ${type}`;
+      setTimeout(() => {
+        alertDiv.className = 'alert';
+      }, 5000);
+    }
+
+    function updateDistrictSelect() {
+      const provinceCode = document.getElementById('provinceSelect').value;
+      const districtSelect = document.getElementById('districtSelect');
+      const townSelect = document.getElementById('townSelect');
+      
+      districtSelect.innerHTML = '<option value="">구/시 선택</option>';
+      townSelect.innerHTML = '<option value="">동/읍/면 선택</option>';
+      
+      if (provinceCode && locationData[provinceCode]) {
+        districtSelect.disabled = false;
+        const districts = locationData[provinceCode].districts;
+        for (const [code, name] of Object.entries(districts)) {
+          const option = document.createElement('option');
+          option.value = code;
+          option.textContent = name;
+          districtSelect.appendChild(option);
         }
-      } catch (error) {
-        console.error('Error loading data:', error);
-        loadSampleData();
+      } else {
+        districtSelect.disabled = true;
+        townSelect.disabled = true;
       }
     }
 
-    function loadSampleData() {
-      allTransactionData = [
-        {
-          "type": "A",
-          "dealType": "매매",
-          "address": "위례 1차 아파트",
-          "price": 50000,
-          "area": 120,
-          "date": "2026-09-02"
-        },
-        {
-          "type": "A",
-          "dealType": "전세",
-          "address": "위례 2차 아파트",
-          "price": 30000,
-          "area": 130,
-          "date": "2026-09-01"
-        },
-        {
-          "type": "A",
-          "dealType": "월세",
-          "address": "위례 3차 아파트",
-          "price": 2500,
-          "area": 115,
-          "date": "2026-08-31"
-        },
-        {
-          "type": "H",
-          "dealType": "매매",
-          "address": "위례 단독주택",
-          "price": 35000,
-          "area": 100,
-          "date": "2026-08-30"
-        },
-        {
-          "type": "A",
-          "dealType": "매매",
-          "address": "위례 프리미엄 아파트",
-          "price": 65000,
-          "area": 145,
-          "date": "2026-08-29"
-        },
-        {
-          "type": "A",
-          "dealType": "전세",
-          "address": "위례 센트럴 아파트",
-          "price": 28000,
-          "area": 125,
-          "date": "2026-08-28"
-        },
-        {
-          "type": "V",
-          "dealType": "월세",
-          "address": "위례 빌라",
-          "price": 2800,
-          "area": 110,
-          "date": "2026-08-27"
-        },
-        {
-          "type": "H",
-          "dealType": "전세",
-          "address": "위례 타운하우스",
-          "price": 25000,
-          "area": 105,
-          "date": "2026-08-26"
+    function updateTownSelect() {
+      const districtCode = document.getElementById('districtSelect').value;
+      const townSelect = document.getElementById('townSelect');
+      
+      townSelect.innerHTML = '<option value="">동/읍/면 선택</option>';
+      
+      if (districtCode) {
+        townSelect.disabled = false;
+      } else {
+        townSelect.disabled = true;
+      }
+    }
+
+    async function fetchRealEstateDataFromAPI() {
+      try {
+        const districtCode = document.getElementById('districtSelect').value;
+        
+        if (!districtCode) {
+          showAlert('구/시를 선택해주세요.', 'error');
+          return;
         }
-      ];
-      displayData();
+
+        document.getElementById('refreshDataBtn').disabled = true;
+        showAlert('부동산원 데이터 조회 중...', 'info');
+
+        const baseUrl = 'https://rt-api.re.go.kr/RealEstateService';
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const dealYM = year + month;
+
+        const apartmentUrl = baseUrl + '/SaleList?LAWD_CD=' + districtCode + '&DEAL_YM=' + dealYM + '&apikey=' + API_KEY;
+        
+        const response = await fetch(apartmentUrl);
+        
+        if (!response.ok) {
+          throw new Error('API 조회 실패');
+        }
+
+        const data = await response.json();
+        
+        if (data.response && data.response.body && data.response.body.items) {
+          const items = data.response.body.items.item;
+          const itemArray = Array.isArray(items) ? items : [items];
+          
+          allTransactionData = itemArray.map(function(item) {
+            return {
+              type: 'A',
+              dealType: '매매',
+              address: item.아파트 || '미정',
+              price: parseInt(item.거래금액) * 10000,
+              area: parseFloat(item.건물면적) || 0,
+              date: item.년 + String(item.월).padStart(2, '0') + String(item.일).padStart(2, '0')
+            };
+          });
+
+          displayData();
+          showAlert(allTransactionData.length + '건의 최신 거래 정보를 불러왔습니다.', 'success');
+        } else {
+          allTransactionData = [];
+          displayData();
+          showAlert('선택한 지역에 거래 정보가 없습니다.', 'info');
+        }
+      } catch (error) {
+        console.error('API 오류:', error);
+        showAlert('데이터 조회 실패: ' + error.message, 'error');
+      }
+      
+      document.getElementById('refreshDataBtn').disabled = false;
     }
 
     function formatDealType(dealType, type) {
-      return `${dealType}(${type})`;
+      return dealType + '(' + type + ')';
     }
 
     function formatDate(dateString) {
-      const [year, month, day] = dateString.split('-');
-      return `${year}/${month}/${day}`;
+      if (!dateString || dateString.length !== 8) return dateString;
+      const year = dateString.substring(0, 4);
+      const month = dateString.substring(4, 6);
+      const day = dateString.substring(6, 8);
+      return year + '/' + month + '/' + day;
     }
 
     function formatPrice(price) {
@@ -469,9 +630,9 @@
         return;
       }
 
-      const prices = filteredData.map(d => d.price);
-      const maxPrice = Math.max(...prices);
-      const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+      const prices = filteredData.map(function(d) { return d.price; });
+      const maxPrice = Math.max.apply(null, prices);
+      const avgPrice = prices.reduce(function(a, b) { return a + b; }, 0) / prices.length;
       
       document.getElementById('maxPriceDisplay').textContent = formatPrice(maxPrice).toLocaleString();
       document.getElementById('avgPriceDisplay').textContent = Math.round(formatPrice(avgPrice)).toLocaleString();
@@ -482,7 +643,7 @@
       if (allTransactionData.length > 0) {
         const newestDate = allTransactionData[0].date;
         const formattedDate = formatDate(newestDate);
-        document.getElementById('lastUpdated').textContent = `최종 업데이트: ${formattedDate}`;
+        document.getElementById('lastUpdated').textContent = '최종 업데이트: ' + formattedDate;
       }
     }
 
@@ -491,7 +652,7 @@
       updateTable();
       updateStats();
       updateLastUpdated();
-      document.getElementById('recordCount').textContent = `총 ${filteredData.length}건`;
+      document.getElementById('recordCount').textContent = '총 ' + filteredData.length + '건';
     }
 
     function updateTable() {
@@ -503,15 +664,9 @@
         return;
       }
 
-      filteredData.forEach(item => {
+      filteredData.forEach(function(item) {
         const row = tbody.insertRow();
-        row.innerHTML = `
-          <td>${formatDealType(item.dealType, item.type)}</td>
-          <td>${item.address}</td>
-          <td class="price-highlight">${formatPrice(item.price).toLocaleString()}</td>
-          <td>${item.area}</td>
-          <td><span class="date-small">${formatDate(item.date)}</span></td>
-        `;
+        row.innerHTML = '<td>' + formatDealType(item.dealType, item.type) + '</td><td>' + item.address + '</td><td class="price-highlight">' + formatPrice(item.price).toLocaleString() + '</td><td>' + item.area + '</td><td><span class="date-small">' + formatDate(item.date) + '</span></td>';
       });
     }
 
@@ -527,7 +682,7 @@
       const minPrice = (parseInt(document.getElementById('minPrice').value) || 0) * 100;
       const maxPrice = (parseInt(document.getElementById('maxPrice').value) || 999999) * 100;
 
-      filteredData = allTransactionData.filter(item => {
+      filteredData = allTransactionData.filter(function(item) {
         const typeMatch = 
           (apartment && item.type === 'A') ||
           (house && item.type === 'H') ||
@@ -545,13 +700,17 @@
 
       updateTable();
       updateStats();
-      document.getElementById('recordCount').textContent = `총 ${filteredData.length}건`;
+      document.getElementById('recordCount').textContent = '총 ' + filteredData.length + '건';
     }
 
+    document.getElementById('provinceSelect').addEventListener('change', updateDistrictSelect);
+    document.getElementById('districtSelect').addEventListener('change', updateTownSelect);
     document.getElementById('applyFiltersBtn').addEventListener('click', applyFilters);
+    document.getElementById('refreshDataBtn').addEventListener('click', fetchRealEstateDataFromAPI);
 
-    // Load data on page load
-    window.addEventListener('load', fetchRealEstateData);
+    window.addEventListener('load', function() {
+      showAlert('시/도 → 구/시를 선택하고 최신정보가져오기를 누르세요', 'info');
+    });
   </script>
 </body>
 </html>
