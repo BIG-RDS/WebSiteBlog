@@ -273,7 +273,7 @@
 
     .location-selector {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 0.5rem;
       margin-bottom: 1rem;
     }
@@ -388,14 +388,11 @@
               <select id="districtSelect" disabled>
                 <option value="">구/시 선택</option>
               </select>
-              <select id="townSelect" disabled>
-                <option value="">동/읍/면 선택</option>
-              </select>
             </div>
           </div>
 
           <div class="button-group">
-            <button class="btn-refresh" id="refreshDataBtn">🔄 최신정보가져오기</button>
+            <button class="btn-refresh" id="refreshDataBtn">최신정보가져오기</button>
           </div>
 
           <div class="filter-group">
@@ -493,117 +490,106 @@
   </footer>
 
   <script>
-    let allTransactionData = [];
-    let filteredData = [];
-    const API_KEY = '917b3e0dec8442b0a8510864bea67ec5';
+    var allTransactionData = [];
+    var filteredData = [];
+    var API_KEY = '917b3e0dec8442b0a8510864bea67ec5';
     
-    const locationData = {
+    var locationData = {
       '11': { name: '서울', districts: { '11010': '종로구', '11020': '중구', '11030': '용산구', '11040': '성동구', '11050': '광진구', '11060': '동대문구', '11070': '중랑구', '11080': '성북구', '11090': '강북구', '11100': '도봉구', '11110': '노원구', '11120': '은평구', '11130': '서대문구', '11140': '마포구', '11150': '양천구', '11160': '강서구', '11170': '구로구', '11180': '금천구', '11190': '영등포구', '11200': '동작구', '11210': '관악구', '11220': '서초구', '11230': '강남구', '11240': '송파구', '11250': '강동구' } },
       '26': { name: '부산', districts: { '26110': '중구', '26140': '서구', '26170': '동구', '26200': '영도구', '26230': '부산진구', '26260': '동래구', '26290': '남구', '26320': '북구', '26350': '해운대구', '26380': '사상구', '26410': '금정구', '26440': '강서구', '26710': '연제구', '26740': '수영구', '26770': '사하구', '26800': '기장군' } },
-      '41': { name: '경기', districts: { '41135': '성남시', '41131': '수원시', '41189': '안양시', '41205': '부천시', '41210': '광명시' } }
+      '41': { name: '경기', districts: { '41131': '수원시', '41135': '성남시', '41189': '안양시', '41205': '부천시', '41210': '광명시', '41220': '평택시', '41230': '동두천시', '41240': '안산시', '41250': '고양시', '41260': '과천시', '41270': '구리시', '41280': '남양주시', '41290': '오산시', '41300': '시흥시', '41310': '군포시', '41320': '의왕시', '41330': '하남시', '41340': '용인시', '41350': '파주시', '41360': '이천시', '41370': '안성시', '41380': '김포시', '41390': '화성시', '41400': '광주시', '41410': '여주시' } },
+      '42': { name: '강원', districts: { '42110': '춘천시', '42130': '원주시', '42150': '강릉시', '42170': '동해시', '42190': '태백시', '42210': '속초시', '42230': '삼척시' } }
     };
 
-    function showAlert(message, type = 'info') {
-      const alertDiv = document.getElementById('alertMessage');
+    function showAlert(message, type) {
+      if (!type) type = 'info';
+      var alertDiv = document.getElementById('alertMessage');
       alertDiv.textContent = message;
-      alertDiv.className = `alert ${type}`;
-      setTimeout(() => {
+      alertDiv.className = 'alert ' + type;
+      setTimeout(function() {
         alertDiv.className = 'alert';
       }, 5000);
     }
 
     function updateDistrictSelect() {
-      const provinceCode = document.getElementById('provinceSelect').value;
-      const districtSelect = document.getElementById('districtSelect');
-      const townSelect = document.getElementById('townSelect');
+      var provinceCode = document.getElementById('provinceSelect').value;
+      var districtSelect = document.getElementById('districtSelect');
       
       districtSelect.innerHTML = '<option value="">구/시 선택</option>';
-      townSelect.innerHTML = '<option value="">동/읍/면 선택</option>';
       
       if (provinceCode && locationData[provinceCode]) {
         districtSelect.disabled = false;
-        const districts = locationData[provinceCode].districts;
-        for (const [code, name] of Object.entries(districts)) {
-          const option = document.createElement('option');
-          option.value = code;
-          option.textContent = name;
-          districtSelect.appendChild(option);
+        var districts = locationData[provinceCode].districts;
+        for (var code in districts) {
+          if (districts.hasOwnProperty(code)) {
+            var option = document.createElement('option');
+            option.value = code;
+            option.textContent = districts[code];
+            districtSelect.appendChild(option);
+          }
         }
       } else {
         districtSelect.disabled = true;
-        townSelect.disabled = true;
       }
     }
 
-    function updateTownSelect() {
-      const districtCode = document.getElementById('districtSelect').value;
-      const townSelect = document.getElementById('townSelect');
+    function fetchRealEstateDataFromAPI() {
+      var districtCode = document.getElementById('districtSelect').value;
       
-      townSelect.innerHTML = '<option value="">동/읍/면 선택</option>';
-      
-      if (districtCode) {
-        townSelect.disabled = false;
-      } else {
-        townSelect.disabled = true;
+      if (!districtCode) {
+        showAlert('구/시를 선택해주세요.', 'error');
+        return;
       }
-    }
 
-    async function fetchRealEstateDataFromAPI() {
-      try {
-        const districtCode = document.getElementById('districtSelect').value;
-        
-        if (!districtCode) {
-          showAlert('구/시를 선택해주세요.', 'error');
-          return;
-        }
+      document.getElementById('refreshDataBtn').disabled = true;
+      showAlert('부동산원 데이터 조회 중...', 'info');
 
-        document.getElementById('refreshDataBtn').disabled = true;
-        showAlert('부동산원 데이터 조회 중...', 'info');
+      var baseUrl = 'https://rt-api.re.go.kr/RealEstateService';
+      var today = new Date();
+      var year = today.getFullYear();
+      var month = String(today.getMonth() + 1).padStart(2, '0');
+      var dealYM = year + month;
 
-        const baseUrl = 'https://rt-api.re.go.kr/RealEstateService';
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const dealYM = year + month;
-
-        const apartmentUrl = baseUrl + '/SaleList?LAWD_CD=' + districtCode + '&DEAL_YM=' + dealYM + '&apikey=' + API_KEY;
-        
-        const response = await fetch(apartmentUrl);
-        
-        if (!response.ok) {
-          throw new Error('API 조회 실패');
-        }
-
-        const data = await response.json();
-        
-        if (data.response && data.response.body && data.response.body.items) {
-          const items = data.response.body.items.item;
-          const itemArray = Array.isArray(items) ? items : [items];
-          
-          allTransactionData = itemArray.map(function(item) {
-            return {
-              type: 'A',
-              dealType: '매매',
-              address: item.아파트 || '미정',
-              price: parseInt(item.거래금액) * 10000,
-              area: parseFloat(item.건물면적) || 0,
-              date: item.년 + String(item.월).padStart(2, '0') + String(item.일).padStart(2, '0')
-            };
-          });
-
-          displayData();
-          showAlert(allTransactionData.length + '건의 최신 거래 정보를 불러왔습니다.', 'success');
-        } else {
-          allTransactionData = [];
-          displayData();
-          showAlert('선택한 지역에 거래 정보가 없습니다.', 'info');
-        }
-      } catch (error) {
-        console.error('API 오류:', error);
-        showAlert('데이터 조회 실패: ' + error.message, 'error');
-      }
+      var apartmentUrl = baseUrl + '/SaleList?LAWD_CD=' + districtCode + '&DEAL_YM=' + dealYM + '&apikey=' + API_KEY;
       
-      document.getElementById('refreshDataBtn').disabled = false;
+      fetch(apartmentUrl)
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error('API 조회 실패');
+          }
+          return response.json();
+        })
+        .then(function(data) {
+          if (data.response && data.response.body && data.response.body.items) {
+            var items = data.response.body.items.item;
+            var itemArray = Array.isArray(items) ? items : [items];
+            
+            allTransactionData = itemArray.map(function(item) {
+              return {
+                type: 'A',
+                dealType: '매매',
+                address: item.아파트 || '미정',
+                price: parseInt(item.거래금액) * 10000,
+                area: parseFloat(item.건물면적) || 0,
+                date: item.년 + String(item.월).padStart(2, '0') + String(item.일).padStart(2, '0')
+              };
+            });
+
+            displayData();
+            showAlert(allTransactionData.length + '건의 최신 거래 정보를 불러왔습니다.', 'success');
+          } else {
+            allTransactionData = [];
+            displayData();
+            showAlert('선택한 지역에 거래 정보가 없습니다.', 'info');
+          }
+        })
+        .catch(function(error) {
+          console.error('API 오류:', error);
+          showAlert('데이터 조회 실패: ' + error.message, 'error');
+        })
+        .finally(function() {
+          document.getElementById('refreshDataBtn').disabled = false;
+        });
     }
 
     function formatDealType(dealType, type) {
@@ -612,9 +598,9 @@
 
     function formatDate(dateString) {
       if (!dateString || dateString.length !== 8) return dateString;
-      const year = dateString.substring(0, 4);
-      const month = dateString.substring(4, 6);
-      const day = dateString.substring(6, 8);
+      var year = dateString.substring(0, 4);
+      var month = dateString.substring(4, 6);
+      var day = dateString.substring(6, 8);
       return year + '/' + month + '/' + day;
     }
 
@@ -630,9 +616,9 @@
         return;
       }
 
-      const prices = filteredData.map(function(d) { return d.price; });
-      const maxPrice = Math.max.apply(null, prices);
-      const avgPrice = prices.reduce(function(a, b) { return a + b; }, 0) / prices.length;
+      var prices = filteredData.map(function(d) { return d.price; });
+      var maxPrice = Math.max.apply(null, prices);
+      var avgPrice = prices.reduce(function(a, b) { return a + b; }, 0) / prices.length;
       
       document.getElementById('maxPriceDisplay').textContent = formatPrice(maxPrice).toLocaleString();
       document.getElementById('avgPriceDisplay').textContent = Math.round(formatPrice(avgPrice)).toLocaleString();
@@ -641,8 +627,8 @@
 
     function updateLastUpdated() {
       if (allTransactionData.length > 0) {
-        const newestDate = allTransactionData[0].date;
-        const formattedDate = formatDate(newestDate);
+        var newestDate = allTransactionData[0].date;
+        var formattedDate = formatDate(newestDate);
         document.getElementById('lastUpdated').textContent = '최종 업데이트: ' + formattedDate;
       }
     }
@@ -656,7 +642,7 @@
     }
 
     function updateTable() {
-      const tbody = document.getElementById('realestateTableBody');
+      var tbody = document.getElementById('realestateTableBody');
       tbody.innerHTML = '';
 
       if (filteredData.length === 0) {
@@ -665,35 +651,35 @@
       }
 
       filteredData.forEach(function(item) {
-        const row = tbody.insertRow();
+        var row = tbody.insertRow();
         row.innerHTML = '<td>' + formatDealType(item.dealType, item.type) + '</td><td>' + item.address + '</td><td class="price-highlight">' + formatPrice(item.price).toLocaleString() + '</td><td>' + item.area + '</td><td><span class="date-small">' + formatDate(item.date) + '</span></td>';
       });
     }
 
     function applyFilters() {
-      const apartment = document.getElementById('filterApartment').checked;
-      const house = document.getElementById('filterHouse').checked;
-      const villa = document.getElementById('filterVilla').checked;
+      var apartment = document.getElementById('filterApartment').checked;
+      var house = document.getElementById('filterHouse').checked;
+      var villa = document.getElementById('filterVilla').checked;
       
-      const dealTypeMae = document.getElementById('filterDealType_매매').checked;
-      const dealTypeJeon = document.getElementById('filterDealType_전세').checked;
-      const dealTypeWol = document.getElementById('filterDealType_월세').checked;
+      var dealTypeMae = document.getElementById('filterDealType_매매').checked;
+      var dealTypeJeon = document.getElementById('filterDealType_전세').checked;
+      var dealTypeWol = document.getElementById('filterDealType_월세').checked;
       
-      const minPrice = (parseInt(document.getElementById('minPrice').value) || 0) * 100;
-      const maxPrice = (parseInt(document.getElementById('maxPrice').value) || 999999) * 100;
+      var minPrice = (parseInt(document.getElementById('minPrice').value) || 0) * 100;
+      var maxPrice = (parseInt(document.getElementById('maxPrice').value) || 999999) * 100;
 
       filteredData = allTransactionData.filter(function(item) {
-        const typeMatch = 
+        var typeMatch = 
           (apartment && item.type === 'A') ||
           (house && item.type === 'H') ||
           (villa && item.type === 'V');
         
-        const dealTypeMatch = 
+        var dealTypeMatch = 
           (dealTypeMae && item.dealType === '매매') ||
           (dealTypeJeon && item.dealType === '전세') ||
           (dealTypeWol && item.dealType === '월세');
         
-        const priceMatch = item.price >= minPrice && item.price <= maxPrice;
+        var priceMatch = item.price >= minPrice && item.price <= maxPrice;
         
         return typeMatch && dealTypeMatch && priceMatch;
       });
@@ -704,7 +690,6 @@
     }
 
     document.getElementById('provinceSelect').addEventListener('change', updateDistrictSelect);
-    document.getElementById('districtSelect').addEventListener('change', updateTownSelect);
     document.getElementById('applyFiltersBtn').addEventListener('click', applyFilters);
     document.getElementById('refreshDataBtn').addEventListener('click', fetchRealEstateDataFromAPI);
 
