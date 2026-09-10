@@ -1,0 +1,737 @@
+{
+  "updatedAt": "2026-09-10T05:59:12Z",
+  "dealYM": "202608",
+  "districtCount": 73,
+  "districts": [
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11010",
+      "districtName": "종로구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11010.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11020",
+      "districtName": "중구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11020.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11030",
+      "districtName": "용산구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11030.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11040",
+      "districtName": "성동구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11040.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11050",
+      "districtName": "광진구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11050.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11060",
+      "districtName": "동대문구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11060.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11070",
+      "districtName": "중랑구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11070.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11080",
+      "districtName": "성북구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11080.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11090",
+      "districtName": "강북구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11090.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11100",
+      "districtName": "도봉구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11100.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11110",
+      "districtName": "노원구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11110.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11120",
+      "districtName": "은평구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11120.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11130",
+      "districtName": "서대문구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11130.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11140",
+      "districtName": "마포구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11140.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11150",
+      "districtName": "양천구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11150.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11160",
+      "districtName": "강서구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11160.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11170",
+      "districtName": "구로구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11170.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11180",
+      "districtName": "금천구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11180.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11190",
+      "districtName": "영등포구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11190.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11200",
+      "districtName": "동작구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11200.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11210",
+      "districtName": "관악구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11210.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11220",
+      "districtName": "서초구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11220.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11230",
+      "districtName": "강남구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11230.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11240",
+      "districtName": "송파구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11240.json"
+    },
+    {
+      "provinceCode": "11",
+      "provinceName": "서울",
+      "districtCode": "11250",
+      "districtName": "강동구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-11250.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26110",
+      "districtName": "중구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26110.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26140",
+      "districtName": "서구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26140.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26170",
+      "districtName": "동구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26170.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26200",
+      "districtName": "영도구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26200.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26230",
+      "districtName": "부산진구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26230.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26260",
+      "districtName": "동래구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26260.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26290",
+      "districtName": "남구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26290.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26320",
+      "districtName": "북구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26320.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26350",
+      "districtName": "해운대구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26350.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26380",
+      "districtName": "사상구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26380.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26410",
+      "districtName": "금정구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26410.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26440",
+      "districtName": "강서구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26440.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26710",
+      "districtName": "연제구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26710.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26740",
+      "districtName": "수영구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26740.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26770",
+      "districtName": "사하구",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26770.json"
+    },
+    {
+      "provinceCode": "26",
+      "provinceName": "부산",
+      "districtCode": "26800",
+      "districtName": "기장군",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-26800.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41131",
+      "districtName": "수원시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41131.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41135",
+      "districtName": "성남시",
+      "transactionCount": 8,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41135.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41189",
+      "districtName": "안양시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41189.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41205",
+      "districtName": "부천시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41205.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41210",
+      "districtName": "광명시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41210.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41220",
+      "districtName": "평택시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41220.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41230",
+      "districtName": "동두천시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41230.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41240",
+      "districtName": "안산시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41240.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41250",
+      "districtName": "고양시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41250.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41260",
+      "districtName": "과천시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41260.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41270",
+      "districtName": "구리시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41270.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41280",
+      "districtName": "남양주시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41280.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41290",
+      "districtName": "오산시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41290.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41300",
+      "districtName": "시흥시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41300.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41310",
+      "districtName": "군포시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41310.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41320",
+      "districtName": "의왕시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41320.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41330",
+      "districtName": "하남시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41330.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41340",
+      "districtName": "용인시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41340.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41350",
+      "districtName": "파주시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41350.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41360",
+      "districtName": "이천시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41360.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41370",
+      "districtName": "안성시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41370.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41380",
+      "districtName": "김포시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41380.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41390",
+      "districtName": "화성시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41390.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41400",
+      "districtName": "광주시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41400.json"
+    },
+    {
+      "provinceCode": "41",
+      "provinceName": "경기",
+      "districtCode": "41410",
+      "districtName": "여주시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-41410.json"
+    },
+    {
+      "provinceCode": "42",
+      "provinceName": "강원",
+      "districtCode": "42110",
+      "districtName": "춘천시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-42110.json"
+    },
+    {
+      "provinceCode": "42",
+      "provinceName": "강원",
+      "districtCode": "42130",
+      "districtName": "원주시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-42130.json"
+    },
+    {
+      "provinceCode": "42",
+      "provinceName": "강원",
+      "districtCode": "42150",
+      "districtName": "강릉시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-42150.json"
+    },
+    {
+      "provinceCode": "42",
+      "provinceName": "강원",
+      "districtCode": "42170",
+      "districtName": "동해시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-42170.json"
+    },
+    {
+      "provinceCode": "42",
+      "provinceName": "강원",
+      "districtCode": "42190",
+      "districtName": "태백시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-42190.json"
+    },
+    {
+      "provinceCode": "42",
+      "provinceName": "강원",
+      "districtCode": "42210",
+      "districtName": "속초시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-42210.json"
+    },
+    {
+      "provinceCode": "42",
+      "provinceName": "강원",
+      "districtCode": "42230",
+      "districtName": "삼척시",
+      "transactionCount": 0,
+      "updatedAt": "2026-09-10T05:59:12Z",
+      "source": "sample",
+      "file": "realestate-42230.json"
+    }
+  ]
+}

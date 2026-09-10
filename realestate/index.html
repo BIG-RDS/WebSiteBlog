@@ -492,7 +492,8 @@
   <script>
     var allTransactionData = [];
     var filteredData = [];
-    var PROXY_URL = '/api/realestate';
+    var DATA_BASE_URL = 'https://raw.githubusercontent.com/big-rds/WebSiteBlog/main/.github/data';
+    var lastUpdatedLabel = '';
     
     var locationData = {
       '11': { name: '서울', districts: { '11010': '종로구', '11020': '중구', '11030': '용산구', '11040': '성동구', '11050': '광진구', '11060': '동대문구', '11070': '중랑구', '11080': '성북구', '11090': '강북구', '11100': '도봉구', '11110': '노원구', '11120': '은평구', '11130': '서대문구', '11140': '마포구', '11150': '양천구', '11160': '강서구', '11170': '구로구', '11180': '금천구', '11190': '영등포구', '11200': '동작구', '11210': '관악구', '11220': '서초구', '11230': '강남구', '11240': '송파구', '11250': '강동구' } },
@@ -533,6 +534,58 @@
       }
     }
 
+    function getDistrictDataUrl(districtCode) {
+      return DATA_BASE_URL + '/realestate-' + districtCode + '.json?ts=' + Date.now();
+    }
+
+    function normalizeLegacyApiResponse(data) {
+      if (!data.response || !data.response.body || !data.response.body.items) {
+        return [];
+      }
+
+      var items = data.response.body.items.item;
+      var itemArray = Array.isArray(items) ? items : (items ? [items] : []);
+
+      return itemArray.map(function(item) {
+        return {
+          type: 'A',
+          dealType: '매매',
+          address: item.아파트 || item.지번 || '미정',
+          price: parseInt(String(item.거래금액 || '0').replace(/[^\d]/g, ''), 10) || 0,
+          area: parseFloat(item.전용면적 || item.건물면적) || 0,
+          date: String(item.년 || '') + String(item.월 || '').padStart(2, '0') + String(item.일 || '').padStart(2, '0')
+        };
+      });
+    }
+
+    function normalizeStaticJsonResponse(data) {
+      if (!data || !Array.isArray(data.transactions)) {
+        return [];
+      }
+
+      return data.transactions.map(function(item) {
+        return {
+          type: item.type || 'A',
+          dealType: item.dealType || '매매',
+          address: item.address || '미정',
+          price: parseInt(item.price, 10) || 0,
+          area: parseFloat(item.area) || 0,
+          date: item.date || ''
+        };
+      });
+    }
+
+    function buildLastUpdatedLabel(data) {
+      if (data && data.updatedAt) {
+        var updatedAt = new Date(data.updatedAt);
+        if (!isNaN(updatedAt.getTime())) {
+          var localDate = updatedAt.getFullYear() + '/' + String(updatedAt.getMonth() + 1).padStart(2, '0') + '/' + String(updatedAt.getDate()).padStart(2, '0');
+          return '데이터 기준: ' + localDate;
+        }
+      }
+      return '';
+    }
+
     function fetchRealEstateDataFromAPI() {
       var districtSelect = document.getElementById('districtSelect');
       var districtCode = districtSelect.value;
@@ -543,41 +596,32 @@
       }
 
       document.getElementById('refreshDataBtn').disabled = true;
-      showAlert('부동산원 데이터 조회 중...', 'info');
+      showAlert('저장된 최신 부동산 데이터를 불러오는 중...', 'info');
 
-      fetch(PROXY_URL + '?districtCode=' + districtCode)
+      fetch(getDistrictDataUrl(districtCode), { cache: 'no-store' })
         .then(function(response) {
           if (!response.ok) {
-            throw new Error('API 조회 실패: ' + response.status);
+            throw new Error('JSON 조회 실패: ' + response.status);
           }
           return response.json();
         })
         .then(function(data) {
-          if (data.response && data.response.body && data.response.body.items) {
-            var items = data.response.body.items.item;
-            var itemArray = Array.isArray(items) ? items : [items];
-            
-            allTransactionData = itemArray.map(function(item) {
-              return {
-                type: 'A',
-                dealType: '매매',
-                address: item.아파트 || '미정',
-                price: parseInt(item.거래금액) * 10000,
-                area: parseFloat(item.건물면적) || 0,
-                date: item.년 + String(item.월).padStart(2, '0') + String(item.일).padStart(2, '0')
-              };
-            });
+          allTransactionData = normalizeStaticJsonResponse(data);
+          if (allTransactionData.length === 0 && data && data.response) {
+            allTransactionData = normalizeLegacyApiResponse(data);
+          }
 
-            displayData();
-            showAlert(allTransactionData.length + '건의 최신 거래 정보를 불러왔습니다.', 'success');
+          lastUpdatedLabel = buildLastUpdatedLabel(data);
+          displayData();
+
+          if (allTransactionData.length > 0) {
+            showAlert(allTransactionData.length + '건의 거래 정보를 불러왔습니다.', 'success');
           } else {
-            allTransactionData = [];
-            displayData();
-            showAlert('선택한 지역에 거래 정보가 없습니다.', 'info');
+            showAlert('선택한 지역에 저장된 거래 정보가 없습니다.', 'info');
           }
         })
         .catch(function(error) {
-          console.error('API 오류:', error);
+          console.error('JSON 오류:', error);
           showAlert('데이터 조회 실패: ' + error.message, 'error');
         })
         .finally(function() {
@@ -590,7 +634,11 @@
     }
 
     function formatDate(dateString) {
-      if (!dateString || dateString.length !== 8) return dateString;
+      if (!dateString) return dateString;
+      if (dateString.length === 10 && dateString.indexOf('-') > -1) {
+        return dateString.replace(/-/g, '/');
+      }
+      if (dateString.length !== 8) return dateString;
       var year = dateString.substring(0, 4);
       var month = dateString.substring(4, 6);
       var day = dateString.substring(6, 8);
@@ -619,11 +667,19 @@
     }
 
     function updateLastUpdated() {
+      if (lastUpdatedLabel) {
+        document.getElementById('lastUpdated').textContent = lastUpdatedLabel;
+        return;
+      }
+
       if (allTransactionData.length > 0) {
         var newestDate = allTransactionData[0].date;
         var formattedDate = formatDate(newestDate);
         document.getElementById('lastUpdated').textContent = '최종 업데이트: ' + formattedDate;
+        return;
       }
+
+      document.getElementById('lastUpdated').textContent = '';
     }
 
     function displayData() {
