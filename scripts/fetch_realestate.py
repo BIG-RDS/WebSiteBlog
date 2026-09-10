@@ -150,6 +150,7 @@ def build_payload(district, deal_ym, updated_at, transactions, source, error=Non
         'districtCode': district['districtCode'],
         'districtName': district['districtName'],
         'dealYM': deal_ym,
+        'requestedDealYM': deal_ym,
         'updatedAt': updated_at,
         'source': source,
         'transactionCount': len(transactions),
@@ -193,6 +194,7 @@ def build_manifest(payloads, updated_at, deal_ym):
                 'districtCode': payload['districtCode'],
                 'districtName': payload['districtName'],
                 'dealYM': payload.get('dealYM'),
+                'requestedDealYM': payload.get('requestedDealYM', payload.get('dealYM')),
                 'transactionCount': payload.get('transactionCount', 0),
                 'updatedAt': payload.get('updatedAt', updated_at),
                 'lastSyncAttemptAt': payload.get('lastSyncAttemptAt', payload.get('updatedAt', updated_at)),
@@ -240,6 +242,7 @@ def fetch_and_write_files(api_key, deal_ym, updated_at):
                     'districtCode': district['districtCode'],
                     'districtName': district['districtName'],
                     'source': 'stale',
+                    'requestedDealYM': deal_ym,
                     'lastSyncAttemptAt': updated_at,
                     'lastError': str(exc),
                     'transactionCount': len(existing.get('transactions', [])),
@@ -259,9 +262,17 @@ def parse_args():
     return parser.parse_args()
 
 
+def is_valid_deal_ym(value):
+    return len(value) == 6 and value.isdigit() and 1 <= int(value[4:6]) <= 12
+
+
 def main():
     args = parse_args()
     updated_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+    if args.deal_ym and not is_valid_deal_ym(args.deal_ym):
+        print('Invalid --deal-ym value. Use YYYYMM format, for example 202608.', file=sys.stderr)
+        return 2
+
     deal_ym = args.deal_ym or get_last_month_deal_ym()
 
     if args.sample_only:

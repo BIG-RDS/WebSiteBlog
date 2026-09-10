@@ -4,7 +4,8 @@
   "districtCode": "11060",
   "districtName": "동대문구",
   "dealYM": "202608",
-  "updatedAt": "2026-09-10T06:05:30Z",
+  "requestedDealYM": "202608",
+  "updatedAt": "2026-09-10T06:07:27Z",
   "source": "sample",
   "transactionCount": 0,
   "transactions": []
