@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
@@ -11,7 +13,10 @@ const REAL_ESTATE_API = 'https://rt-api.re.go.kr/RealEstateService/SaleList';
 
 // 헬스 체크
 app.get('/', (req, res) => {
-  res.json({ status: '부동산원 API 프록시 서버 정상 작동중' });
+  res.json({ 
+    status: '✅ 부동산원 API 프록시 서버 정상 작동중',
+    version: '1.0.0'
+  });
 });
 
 app.get('/api/realestate', async (req, res) => {
@@ -24,7 +29,7 @@ app.get('/api/realestate', async (req, res) => {
 
     const queryMonth = dealYM || getLastMonth();
 
-    console.log(`요청: 지역코드=${districtCode}, 거래월=${queryMonth}`);
+    console.log(`📍 요청: 지역코드=${districtCode}, 거래월=${queryMonth}`);
 
     const response = await axios.get(REAL_ESTATE_API, {
       params: {
@@ -34,14 +39,14 @@ app.get('/api/realestate', async (req, res) => {
       },
       timeout: 10000,
       headers: {
-        'User-Agent': 'Mozilla/5.0'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }
     });
 
-    console.log('부동산원 API 응답 수신');
+    console.log('✅ 부동산원 API 응답 수신');
     res.json(response.data);
   } catch (error) {
-    console.error('API 오류:', error.message);
+    console.error('❌ API 오류:', error.message);
     res.status(500).json({ 
       error: '데이터 조회 실패',
       message: error.message 
@@ -64,9 +69,9 @@ function getLastMonth() {
   return year + String(month).padStart(2, '0');
 }
 
-// Heroku 포트 사용
+// Render 포트 설정
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ 프록시 서버 실행 중: http://localhost:${PORT}`);
-  console.log(`✅ API 엔드포인트: http://localhost:${PORT}/api/realestate`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 프록시 서버 실행 중: PORT ${PORT}`);
+  console.log(`🌐 API 엔드포인트: /api/realestate`);
 });
