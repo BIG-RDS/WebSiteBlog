@@ -226,17 +226,21 @@ def fetch_and_write_files(api_key, deal_ym, updated_at):
             if existing is None:
                 payload = sample_payload(district, deal_ym, updated_at)
                 payload['source'] = 'sample-fallback'
+                payload['lastSyncAttemptAt'] = updated_at
                 payload['lastError'] = str(exc)
                 write_json(district_path(district['districtCode']), payload)
             else:
-                payload = build_payload(
-                    district,
-                    deal_ym,
-                    updated_at,
-                    existing.get('transactions', []),
-                    'stale',
-                    str(exc),
-                )
+                payload = {
+                    **existing,
+                    'provinceCode': district['provinceCode'],
+                    'provinceName': district['provinceName'],
+                    'districtCode': district['districtCode'],
+                    'districtName': district['districtName'],
+                    'source': 'stale',
+                    'lastSyncAttemptAt': updated_at,
+                    'lastError': str(exc),
+                    'transactionCount': len(existing.get('transactions', [])),
+                }
                 write_json(district_path(district['districtCode']), payload)
             failures.append(f"{district['districtCode']} {district['districtName']}: {exc}")
         payloads.append(payload)
