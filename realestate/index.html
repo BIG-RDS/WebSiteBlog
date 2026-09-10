@@ -492,7 +492,14 @@
   <script>
     var allTransactionData = [];
     var filteredData = [];
-    var DATA_BASE_URL = '../.github/data';
+    function getDataBaseUrl() {
+      var pathname = window.location.pathname;
+      var realestateIndex = pathname.indexOf('/realestate/');
+      var basePath = realestateIndex >= 0 ? pathname.substring(0, realestateIndex) : pathname.replace(/\/[^/]*$/, '');
+      return window.location.origin + basePath + '/.github/data';
+    }
+
+    var DATA_BASE_URL = getDataBaseUrl();
     var lastUpdatedLabel = '';
     
     var locationData = {

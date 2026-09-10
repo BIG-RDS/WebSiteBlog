@@ -11,7 +11,7 @@
 2. Python 스크립트(`scripts/fetch_realestate.py`)가 주요 지역의 실거래가 데이터를 수집합니다.
 3. 지역별 JSON 파일이 `.github/data/realestate-<districtCode>.json`에 저장됩니다.
 4. 요약 매니페스트가 `.github/data/realestate-data.json`에 저장됩니다.
-5. `realestate/index.html`은 GitHub raw URL에서 해당 JSON 파일을 직접 불러옵니다.
+5. `realestate/index.html`은 현재 배포된 사이트 기준 경로(`/.github/data/realestate-<districtCode>.json`)에서 해당 JSON 파일을 직접 불러옵니다.
 
 ## 필요한 저장소 설정
 

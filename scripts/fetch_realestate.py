@@ -138,7 +138,7 @@ def fetch_transactions(district_code, deal_ym, api_key):
         payload = response.read().decode('utf-8', errors='replace')
     root = ET.fromstring(payload)
     items = [normalize_transaction(item) for item in root.findall('.//item')]
-    items = [item for item in items if item['address'] and item['price'] >= 0]
+    items = [item for item in items if item['address'] and item['price'] > 0]
     items.sort(key=lambda item: (item.get('date', ''), item.get('price', 0), item.get('address', '')), reverse=True)
     return items
 
