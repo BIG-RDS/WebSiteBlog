@@ -37,11 +37,7 @@ function normalizeOrigin(origin) {
   }
 }
 
-function buildAllowedOrigins(req) {
-  const requestHost = req.headers.host;
-  const requestProtocol =
-    req.headers['x-forwarded-proto'] ||
-    'http';
+function buildAllowedOrigins() {
   const configuredOrigins = String(process.env.ALLOWED_ORIGINS || '')
     .split(',')
     .map(function(origin) {
@@ -49,10 +45,6 @@ function buildAllowedOrigins(req) {
     })
     .filter(Boolean);
   const allowedOrigins = new Set(configuredOrigins);
-
-  if (requestHost) {
-    allowedOrigins.add(`${requestProtocol}://${requestHost}`);
-  }
 
   allowedOrigins.add('https://big-rds.github.io');
   allowedOrigins.add('http://localhost:3000');
@@ -65,7 +57,7 @@ function buildAllowedOrigins(req) {
 
 function setCorsHeaders(req, res) {
   const requestOrigin = normalizeOrigin(req.headers.origin);
-  const allowedOrigins = buildAllowedOrigins(req);
+  const allowedOrigins = buildAllowedOrigins();
 
   if (requestOrigin && allowedOrigins.has(requestOrigin)) {
     res.setHeader('Access-Control-Allow-Origin', requestOrigin);
