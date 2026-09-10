@@ -57,14 +57,14 @@ LOCATIONS = {
 
 SAMPLE_TRANSACTIONS = {
     '41135': [
-        {'type': 'A', 'dealType': '매매', 'address': '위례 1차 아파트', 'price': 50000, 'area': 120, 'date': '20260902'},
-        {'type': 'A', 'dealType': '전세', 'address': '위례 2차 아파트', 'price': 30000, 'area': 130, 'date': '20260901'},
-        {'type': 'A', 'dealType': '월세', 'address': '위례 3차 아파트', 'price': 2500, 'area': 115, 'date': '20260831'},
-        {'type': 'H', 'dealType': '매매', 'address': '위례 단독주택', 'price': 35000, 'area': 100, 'date': '20260830'},
-        {'type': 'A', 'dealType': '매매', 'address': '위례 프리미엄 아파트', 'price': 65000, 'area': 145, 'date': '20260829'},
-        {'type': 'A', 'dealType': '전세', 'address': '위례 센트럴 아파트', 'price': 28000, 'area': 125, 'date': '20260828'},
-        {'type': 'V', 'dealType': '월세', 'address': '위례 빌라', 'price': 2800, 'area': 110, 'date': '20260827'},
-        {'type': 'H', 'dealType': '전세', 'address': '위례 타운하우스', 'price': 25000, 'area': 105, 'date': '20260826'}
+        {'type': 'A', 'dealType': '매매', 'address': '위례 1차 아파트', 'price': 50000, 'area': 120, 'date': '20260831'},
+        {'type': 'A', 'dealType': '전세', 'address': '위례 2차 아파트', 'price': 30000, 'area': 130, 'date': '20260830'},
+        {'type': 'A', 'dealType': '월세', 'address': '위례 3차 아파트', 'price': 2500, 'area': 115, 'date': '20260829'},
+        {'type': 'H', 'dealType': '매매', 'address': '위례 단독주택', 'price': 35000, 'area': 100, 'date': '20260828'},
+        {'type': 'A', 'dealType': '매매', 'address': '위례 프리미엄 아파트', 'price': 65000, 'area': 145, 'date': '20260827'},
+        {'type': 'A', 'dealType': '전세', 'address': '위례 센트럴 아파트', 'price': 28000, 'area': 125, 'date': '20260826'},
+        {'type': 'V', 'dealType': '월세', 'address': '위례 빌라', 'price': 2800, 'area': 110, 'date': '20260825'},
+        {'type': 'H', 'dealType': '전세', 'address': '위례 타운하우스', 'price': 25000, 'area': 105, 'date': '20260824'}
     ]
 }
 

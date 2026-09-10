@@ -4,7 +4,7 @@
   "districtCode": "41135",
   "districtName": "성남시",
   "dealYM": "202608",
-  "updatedAt": "2026-09-10T05:59:12Z",
+  "updatedAt": "2026-09-10T06:00:02Z",
   "source": "sample",
   "transactionCount": 8,
   "transactions": [
@@ -14,7 +14,7 @@
       "address": "위례 1차 아파트",
       "price": 50000,
       "area": 120,
-      "date": "20260902"
+      "date": "20260831"
     },
     {
       "type": "A",
@@ -22,7 +22,7 @@
       "address": "위례 2차 아파트",
       "price": 30000,
       "area": 130,
-      "date": "20260901"
+      "date": "20260830"
     },
     {
       "type": "A",
@@ -30,7 +30,7 @@
       "address": "위례 3차 아파트",
       "price": 2500,
       "area": 115,
-      "date": "20260831"
+      "date": "20260829"
     },
     {
       "type": "H",
@@ -38,7 +38,7 @@
       "address": "위례 단독주택",
       "price": 35000,
       "area": 100,
-      "date": "20260830"
+      "date": "20260828"
     },
     {
       "type": "A",
@@ -46,7 +46,7 @@
       "address": "위례 프리미엄 아파트",
       "price": 65000,
       "area": 145,
-      "date": "20260829"
+      "date": "20260827"
     },
     {
       "type": "A",
@@ -54,7 +54,7 @@
       "address": "위례 센트럴 아파트",
       "price": 28000,
       "area": 125,
-      "date": "20260828"
+      "date": "20260826"
     },
     {
       "type": "V",
@@ -62,7 +62,7 @@
       "address": "위례 빌라",
       "price": 2800,
       "area": 110,
-      "date": "20260827"
+      "date": "20260825"
     },
     {
       "type": "H",
@@ -70,7 +70,7 @@
       "address": "위례 타운하우스",
       "price": 25000,
       "area": 105,
-      "date": "20260826"
+      "date": "20260824"
     }
   ]
 }
