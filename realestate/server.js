@@ -86,6 +86,28 @@ function getUpstreamError(data) {
   return { resultCode, message };
 }
 
+function getUpstreamErrorStatus(upstreamError) {
+  const message = String(upstreamError.message || '').toLowerCase();
+
+  if (
+    message.includes('auth') ||
+    message.includes('invalid key') ||
+    message.includes('service key') ||
+    message.includes('api key') ||
+    message.includes('apikey')
+  ) {
+    return 401;
+  }
+
+  return 400;
+}
+
+function createError(message, statusCode) {
+  const error = new Error(message);
+  error.statusCode = statusCode;
+  return error;
+}
+
 function sendJson(req, res, statusCode, body) {
   setCorsHeaders(req, res);
   res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -125,7 +147,10 @@ async function handleRealEstateRequest(req, searchParams, res) {
     });
 
     if (!response.ok) {
-      throw new Error(`부동산원 API 응답 오류: ${response.status}`);
+      throw createError(
+        `부동산원 API 응답 오류: ${response.status}`,
+        response.status >= 400 && response.status < 500 ? response.status : 502
+      );
     }
 
     const xml = await response.text();
@@ -133,14 +158,17 @@ async function handleRealEstateRequest(req, searchParams, res) {
     const upstreamError = getUpstreamError(data);
 
     if (upstreamError) {
-      throw new Error(`${upstreamError.message} (${upstreamError.resultCode})`);
+      throw createError(
+        `${upstreamError.message} (${upstreamError.resultCode})`,
+        getUpstreamErrorStatus(upstreamError)
+      );
     }
 
     console.log('✅ 부동산원 API 응답 수신');
     sendJson(req, res, 200, data);
   } catch (error) {
     console.error('❌ API 오류:', error.message);
-    sendJson(req, res, 500, {
+    sendJson(req, res, error.statusCode || 502, {
       error: '데이터 조회 실패',
       message: error.message
     });
@@ -175,7 +203,7 @@ const server = http.createServer((req, res) => {
   if (requestUrl.pathname === '/api/realestate') {
     handleRealEstateRequest(req, requestUrl.searchParams, res).catch(function(error) {
       console.error('❌ API 오류:', error.message);
-      sendJson(req, res, 500, {
+      sendJson(req, res, error.statusCode || 502, {
         error: '데이터 조회 실패',
         message: error.message
       });

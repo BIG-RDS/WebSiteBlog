@@ -83,6 +83,28 @@ function getUpstreamError(data) {
   return { resultCode, message };
 }
 
+function getUpstreamErrorStatus(upstreamError) {
+  const message = String(upstreamError.message || '').toLowerCase();
+
+  if (
+    message.includes('auth') ||
+    message.includes('invalid key') ||
+    message.includes('service key') ||
+    message.includes('api key') ||
+    message.includes('apikey')
+  ) {
+    return 401;
+  }
+
+  return 400;
+}
+
+function createError(message, statusCode) {
+  const error = new Error(message);
+  error.statusCode = statusCode;
+  return error;
+}
+
 async function handler(req, res) {
   setCorsHeaders(req, res);
 
@@ -124,7 +146,10 @@ async function handler(req, res) {
     });
 
     if (!response.ok) {
-      throw new Error(`부동산원 API 응답 오류: ${response.status}`);
+      throw createError(
+        `부동산원 API 응답 오류: ${response.status}`,
+        response.status >= 400 && response.status < 500 ? response.status : 502
+      );
     }
 
     const xml = await response.text();
@@ -132,14 +157,17 @@ async function handler(req, res) {
     const upstreamError = getUpstreamError(data);
 
     if (upstreamError) {
-      throw new Error(`${upstreamError.message} (${upstreamError.resultCode})`);
+      throw createError(
+        `${upstreamError.message} (${upstreamError.resultCode})`,
+        getUpstreamErrorStatus(upstreamError)
+      );
     }
 
     console.log('✅ 부동산원 API 응답 수신');
     res.status(200).json(data);
   } catch (error) {
     console.error('❌ API 오류:', error.message);
-    res.status(500).json({ 
+    res.status(error.statusCode || 502).json({ 
       error: '데이터 조회 실패',
       message: error.message 
     });
