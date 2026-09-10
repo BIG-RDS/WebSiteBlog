@@ -19,11 +19,11 @@ GitHub Actions에서 실데이터를 수집하려면 저장소 **Secrets and var
 
 - `REALESTATE_API_KEY`: 부동산원 API 키
 
-secret이 설정되지 않아도 저장소에는 초기 샘플 JSON 파일이 포함되어 있어 정적 페이지 구조는 바로 확인할 수 있습니다.
+secret이 설정되지 않아도 저장소에는 초기 샘플 JSON 파일이 포함되어 있으며, 워크플로우도 샘플 데이터를 다시 생성해 정적 페이지 구조를 유지합니다.
 
 ## 수동 실행
 
-GitHub 저장소의 **Actions → Fetch real estate data → Run workflow**에서 즉시 데이터를 갱신할 수 있습니다.
+GitHub 저장소의 **Actions → Fetch real estate data → Run workflow**에서 즉시 데이터를 갱신할 수 있습니다. secret이 없으면 실데이터 대신 샘플 JSON이 다시 생성됩니다.
 
 ## 생성 파일 구조
 

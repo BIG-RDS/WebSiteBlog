@@ -28,7 +28,13 @@ jobs:
       - name: Fetch district JSON files
         env:
           REALESTATE_API_KEY: ${{ secrets.REALESTATE_API_KEY }}
-        run: python scripts/fetch_realestate.py
+        run: |
+          if [[ -n "$REALESTATE_API_KEY" ]]; then
+            python scripts/fetch_realestate.py
+          else
+            echo "REALESTATE_API_KEY is not configured. Regenerating sample data instead."
+            python scripts/fetch_realestate.py --sample-only
+          fi
 
       - name: Commit and push updated data
         run: |

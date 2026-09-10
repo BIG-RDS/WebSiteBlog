@@ -494,8 +494,10 @@
     var filteredData = [];
     function getDataBaseUrl() {
       var pathname = window.location.pathname;
-      var realestateIndex = pathname.indexOf('/realestate/');
-      var basePath = realestateIndex >= 0 ? pathname.substring(0, realestateIndex) : pathname.replace(/\/[^/]*$/, '');
+      var basePath = pathname.replace(/\/realestate(?:\/.*)?$/, '');
+      if (basePath === pathname) {
+        basePath = pathname.replace(/\/[^/]*$/, '');
+      }
       return window.location.origin + basePath + '/.github/data';
     }
 
@@ -602,6 +604,7 @@
         return;
       }
 
+      lastUpdatedLabel = '';
       document.getElementById('refreshDataBtn').disabled = true;
       showAlert('저장된 최신 부동산 데이터를 불러오는 중...', 'info');
 
@@ -629,6 +632,9 @@
         })
         .catch(function(error) {
           console.error('JSON 오류:', error);
+          allTransactionData = [];
+          lastUpdatedLabel = '';
+          displayData();
           showAlert('데이터 조회 실패: ' + error.message, 'error');
         })
         .finally(function() {

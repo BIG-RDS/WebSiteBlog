@@ -183,8 +183,8 @@ def load_existing_payload(district_code):
 
 def build_manifest(payloads, updated_at, deal_ym):
     return {
-        'updatedAt': updated_at,
-        'dealYM': deal_ym,
+        'generatedAt': updated_at,
+        'requestedDealYM': deal_ym,
         'districtCount': len(payloads),
         'districts': [
             {
@@ -192,9 +192,12 @@ def build_manifest(payloads, updated_at, deal_ym):
                 'provinceName': payload['provinceName'],
                 'districtCode': payload['districtCode'],
                 'districtName': payload['districtName'],
+                'dealYM': payload.get('dealYM'),
                 'transactionCount': payload.get('transactionCount', 0),
                 'updatedAt': payload.get('updatedAt', updated_at),
+                'lastSyncAttemptAt': payload.get('lastSyncAttemptAt', payload.get('updatedAt', updated_at)),
                 'source': payload.get('source', 'unknown'),
+                'isStale': payload.get('source') in {'stale', 'sample-fallback'},
                 'file': f"realestate-{payload['districtCode']}.json",
             }
             for payload in payloads
