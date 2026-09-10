@@ -492,7 +492,7 @@
   <script>
     var allTransactionData = [];
     var filteredData = [];
-    var API_KEY = '917b3e0dec8442b0a8510864bea67ec5';
+    var PROXY_URL = 'http://localhost:3000/api/realestate';
     
     var locationData = {
       '11': { name: '서울', districts: { '11010': '종로구', '11020': '중구', '11030': '용산구', '11040': '성동구', '11050': '광진구', '11060': '동대문구', '11070': '중랑구', '11080': '성북구', '11090': '강북구', '11100': '도봉구', '11110': '노원구', '11120': '은평구', '11130': '서대문구', '11140': '마포구', '11150': '양천구', '11160': '강서구', '11170': '구로구', '11180': '금천구', '11190': '영등포구', '11200': '동작구', '11210': '관악구', '11220': '서초구', '11230': '강남구', '11240': '송파구', '11250': '강동구' } },
@@ -534,9 +534,10 @@
     }
 
     function fetchRealEstateDataFromAPI() {
-      var districtCode = document.getElementById('districtSelect').value;
+      var districtSelect = document.getElementById('districtSelect');
+      var districtCode = districtSelect.value;
       
-      if (!districtCode) {
+      if (!districtCode || districtCode === '') {
         showAlert('구/시를 선택해주세요.', 'error');
         return;
       }
@@ -544,18 +545,10 @@
       document.getElementById('refreshDataBtn').disabled = true;
       showAlert('부동산원 데이터 조회 중...', 'info');
 
-      var baseUrl = 'https://rt-api.re.go.kr/RealEstateService';
-      var today = new Date();
-      var year = today.getFullYear();
-      var month = String(today.getMonth() + 1).padStart(2, '0');
-      var dealYM = year + month;
-
-      var apartmentUrl = baseUrl + '/SaleList?LAWD_CD=' + districtCode + '&DEAL_YM=' + dealYM + '&apikey=' + API_KEY;
-      
-      fetch(apartmentUrl)
+      fetch(PROXY_URL + '?districtCode=' + districtCode)
         .then(function(response) {
           if (!response.ok) {
-            throw new Error('API 조회 실패');
+            throw new Error('API 조회 실패: ' + response.status);
           }
           return response.json();
         })
@@ -585,7 +578,7 @@
         })
         .catch(function(error) {
           console.error('API 오류:', error);
-          showAlert('데이터 조회 실패: ' + error.message, 'error');
+          showAlert('데이터 조회 실패: ' + error.message + '. 프록시 서버를 실행해주세요.', 'error');
         })
         .finally(function() {
           document.getElementById('refreshDataBtn').disabled = false;
