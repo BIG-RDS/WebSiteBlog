@@ -229,7 +229,15 @@ def fetch_and_write_files(api_key, deal_ym, updated_at):
                 payload['lastError'] = str(exc)
                 write_json(district_path(district['districtCode']), payload)
             else:
-                payload = existing
+                payload = build_payload(
+                    district,
+                    deal_ym,
+                    updated_at,
+                    existing.get('transactions', []),
+                    'stale',
+                    str(exc),
+                )
+                write_json(district_path(district['districtCode']), payload)
             failures.append(f"{district['districtCode']} {district['districtName']}: {exc}")
         payloads.append(payload)
 
