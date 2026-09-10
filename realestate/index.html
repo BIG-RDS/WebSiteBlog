@@ -501,7 +501,7 @@
         return 'http://localhost:3000/api/realestate';
       }
 
-      if (/\.vercel\.app$/i.test(host)) {
+      if (!/github\.io$/i.test(host)) {
         return window.location.origin + '/api/realestate';
       }
 

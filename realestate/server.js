@@ -31,6 +31,24 @@ function setCorsHeaders(res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
+function getUpstreamError(data) {
+  const responseData = data && data.response;
+  const header = responseData && responseData.header;
+  const resultCode = String(
+    (header && (header.resultCode || header.returnReasonCode || header.code)) || ''
+  ).trim();
+
+  if (!resultCode || resultCode === '00' || resultCode === '0' || resultCode.toUpperCase() === 'SUCCESS') {
+    return null;
+  }
+
+  const message =
+    (header && (header.resultMsg || header.returnAuthMsg || header.message)) ||
+    '부동산원 API가 오류를 반환했습니다';
+
+  return { resultCode, message };
+}
+
 function sendJson(res, statusCode, body) {
   setCorsHeaders(res);
   res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -75,6 +93,11 @@ async function handleRealEstateRequest(searchParams, res) {
 
     const xml = await response.text();
     const data = parser.parse(xml);
+    const upstreamError = getUpstreamError(data);
+
+    if (upstreamError) {
+      throw new Error(`${upstreamError.message} (${upstreamError.resultCode})`);
+    }
 
     console.log('✅ 부동산원 API 응답 수신');
     sendJson(res, 200, data);
