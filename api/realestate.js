@@ -22,8 +22,54 @@ function getLastMonth() {
   return year + String(month).padStart(2, '0');
 }
 
-function setCorsHeaders(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+function normalizeOrigin(origin) {
+  if (!origin) {
+    return '';
+  }
+
+  try {
+    return new URL(origin).origin;
+  } catch (error) {
+    return '';
+  }
+}
+
+function buildAllowedOrigins(req) {
+  const requestHost = req.headers && req.headers.host;
+  const requestProtocol =
+    (req.headers && req.headers['x-forwarded-proto']) ||
+    req.protocol ||
+    'https';
+  const configuredOrigins = String(process.env.ALLOWED_ORIGINS || '')
+    .split(',')
+    .map(function(origin) {
+      return normalizeOrigin(origin.trim());
+    })
+    .filter(Boolean);
+  const allowedOrigins = new Set(configuredOrigins);
+
+  if (requestHost) {
+    allowedOrigins.add(`${requestProtocol}://${requestHost}`);
+  }
+
+  allowedOrigins.add('https://big-rds.github.io');
+  allowedOrigins.add('http://localhost:3000');
+  allowedOrigins.add('http://127.0.0.1:3000');
+  allowedOrigins.add('http://localhost:8000');
+  allowedOrigins.add('http://127.0.0.1:8000');
+
+  return allowedOrigins;
+}
+
+function setCorsHeaders(req, res) {
+  const requestOrigin = normalizeOrigin(req.headers && req.headers.origin);
+  const allowedOrigins = buildAllowedOrigins(req);
+
+  if (requestOrigin && allowedOrigins.has(requestOrigin)) {
+    res.setHeader('Access-Control-Allow-Origin', requestOrigin);
+    res.setHeader('Vary', 'Origin');
+  }
+
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
@@ -47,7 +93,7 @@ function getUpstreamError(data) {
 }
 
 async function handler(req, res) {
-  setCorsHeaders(res);
+  setCorsHeaders(req, res);
 
   if (req.method === 'OPTIONS') {
     res.status(200).end();

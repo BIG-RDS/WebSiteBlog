@@ -41,8 +41,9 @@ Vercel Serverless 함수(`../api/realestate.js`)는 `REAL_ESTATE_API_KEY` 환경
 
 1. Vercel 프로젝트 생성 후 **Settings → Environment Variables** 로 이동
 2. `REAL_ESTATE_API_KEY` 추가
-3. Production / Preview / Development 환경에 모두 적용
-4. 재배포 후 `https://<your-vercel-domain>/api/realestate?districtCode=11010` 로 확인
+3. GitHub Pages 외 다른 프론트엔드 도메인에서 호출할 경우 `ALLOWED_ORIGINS`에 허용할 Origin을 쉼표로 추가
+4. Production / Preview / Development 환경에 모두 적용
+5. 재배포 후 `https://<your-vercel-domain>/api/realestate?districtCode=11010` 로 확인
 
 GitHub Pages에서 `realestate/index.html`을 계속 사용할 경우 아래 값을 실제 배포 URL로 바꾸세요.
 

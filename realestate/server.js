@@ -25,8 +25,53 @@ function getLastMonth() {
   return year + String(month).padStart(2, '0');
 }
 
-function setCorsHeaders(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+function normalizeOrigin(origin) {
+  if (!origin) {
+    return '';
+  }
+
+  try {
+    return new URL(origin).origin;
+  } catch (error) {
+    return '';
+  }
+}
+
+function buildAllowedOrigins(req) {
+  const requestHost = req.headers.host;
+  const requestProtocol =
+    req.headers['x-forwarded-proto'] ||
+    'http';
+  const configuredOrigins = String(process.env.ALLOWED_ORIGINS || '')
+    .split(',')
+    .map(function(origin) {
+      return normalizeOrigin(origin.trim());
+    })
+    .filter(Boolean);
+  const allowedOrigins = new Set(configuredOrigins);
+
+  if (requestHost) {
+    allowedOrigins.add(`${requestProtocol}://${requestHost}`);
+  }
+
+  allowedOrigins.add('https://big-rds.github.io');
+  allowedOrigins.add('http://localhost:3000');
+  allowedOrigins.add('http://127.0.0.1:3000');
+  allowedOrigins.add('http://localhost:8000');
+  allowedOrigins.add('http://127.0.0.1:8000');
+
+  return allowedOrigins;
+}
+
+function setCorsHeaders(req, res) {
+  const requestOrigin = normalizeOrigin(req.headers.origin);
+  const allowedOrigins = buildAllowedOrigins(req);
+
+  if (requestOrigin && allowedOrigins.has(requestOrigin)) {
+    res.setHeader('Access-Control-Allow-Origin', requestOrigin);
+    res.setHeader('Vary', 'Origin');
+  }
+
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
@@ -49,24 +94,24 @@ function getUpstreamError(data) {
   return { resultCode, message };
 }
 
-function sendJson(res, statusCode, body) {
-  setCorsHeaders(res);
+function sendJson(req, res, statusCode, body) {
+  setCorsHeaders(req, res);
   res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
   res.end(JSON.stringify(body));
 }
 
-async function handleRealEstateRequest(searchParams, res) {
+async function handleRealEstateRequest(req, searchParams, res) {
   const districtCode = searchParams.get('districtCode');
   const dealYM = searchParams.get('dealYM');
   const apiKey = process.env.REAL_ESTATE_API_KEY;
 
   if (!districtCode) {
-    sendJson(res, 400, { error: '구/시 코드가 필요합니다' });
+    sendJson(req, res, 400, { error: '구/시 코드가 필요합니다' });
     return;
   }
 
   if (!apiKey) {
-    sendJson(res, 500, { error: 'REAL_ESTATE_API_KEY 환경변수가 설정되지 않았습니다' });
+    sendJson(req, res, 500, { error: 'REAL_ESTATE_API_KEY 환경변수가 설정되지 않았습니다' });
     return;
   }
 
@@ -100,10 +145,10 @@ async function handleRealEstateRequest(searchParams, res) {
     }
 
     console.log('✅ 부동산원 API 응답 수신');
-    sendJson(res, 200, data);
+    sendJson(req, res, 200, data);
   } catch (error) {
     console.error('❌ API 오류:', error.message);
-    sendJson(res, 500, {
+    sendJson(req, res, 500, {
       error: '데이터 조회 실패',
       message: error.message
     });
@@ -116,19 +161,19 @@ const server = http.createServer((req, res) => {
   const requestUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
 
   if (req.method === 'OPTIONS') {
-    setCorsHeaders(res);
+    setCorsHeaders(req, res);
     res.writeHead(204);
     res.end();
     return;
   }
 
   if (req.method !== 'GET') {
-    sendJson(res, 405, { error: 'GET 요청만 지원합니다' });
+    sendJson(req, res, 405, { error: 'GET 요청만 지원합니다' });
     return;
   }
 
   if (requestUrl.pathname === '/') {
-    sendJson(res, 200, {
+    sendJson(req, res, 200, {
       status: '✅ 부동산원 API 프록시 서버 정상 작동중',
       version: '1.0.0'
     });
@@ -136,11 +181,11 @@ const server = http.createServer((req, res) => {
   }
 
   if (requestUrl.pathname === '/api/realestate') {
-    handleRealEstateRequest(requestUrl.searchParams, res);
+    handleRealEstateRequest(req, requestUrl.searchParams, res);
     return;
   }
 
-  sendJson(res, 404, { error: '요청한 경로를 찾을 수 없습니다' });
+  sendJson(req, res, 404, { error: '요청한 경로를 찾을 수 없습니다' });
 });
 
 server.listen(PORT, '0.0.0.0', () => {
