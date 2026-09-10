@@ -33,6 +33,25 @@ https://your-domain.com/realestate/index.html
 
 ---
 
+## ▲ Vercel 배포 전 필수 설정
+
+Vercel Serverless 함수(`../api/realestate.js`)는 `REAL_ESTATE_API_KEY` 환경변수를 사용합니다.
+
+1. Vercel 프로젝트 생성 후 **Settings → Environment Variables** 로 이동
+2. `REAL_ESTATE_API_KEY` 추가
+3. Production / Preview / Development 환경에 모두 적용
+4. 재배포 후 `https://<your-vercel-domain>/api/realestate?districtCode=11010` 로 확인
+
+GitHub Pages에서 `realestate/index.html`을 계속 사용할 경우 아래 값을 실제 배포 URL로 바꾸세요.
+
+```js
+var DEPLOYED_PROXY_URL = 'https://REPLACE_WITH_YOUR_VERCEL_URL/api/realestate';
+```
+
+Vercel 도메인에서 페이지를 직접 열면 `/api/realestate`를 자동으로 사용합니다.
+
+---
+
 ## 🔧 동작 원리
 
 1. **프론트엔드** (`index.html`)

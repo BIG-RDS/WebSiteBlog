@@ -1,0 +1,10 @@
+{
+  "name": "website-blog",
+  "private": true,
+  "version": "1.0.0",
+  "description": "All About the World static site with a Vercel real estate proxy",
+  "license": "MIT",
+  "dependencies": {
+    "fast-xml-parser": "^5.5.6"
+  }
+}
