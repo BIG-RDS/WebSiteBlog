@@ -9,6 +9,11 @@ app.use(express.json());
 const API_KEY = '917b3e0dec8442b0a8510864bea67ec5';
 const REAL_ESTATE_API = 'https://rt-api.re.go.kr/RealEstateService/SaleList';
 
+// 헬스 체크
+app.get('/', (req, res) => {
+  res.json({ status: '부동산원 API 프록시 서버 정상 작동중' });
+});
+
 app.get('/api/realestate', async (req, res) => {
   try {
     const { districtCode, dealYM } = req.query;
@@ -19,15 +24,21 @@ app.get('/api/realestate', async (req, res) => {
 
     const queryMonth = dealYM || getLastMonth();
 
+    console.log(`요청: 지역코드=${districtCode}, 거래월=${queryMonth}`);
+
     const response = await axios.get(REAL_ESTATE_API, {
       params: {
         LAWD_CD: districtCode,
         DEAL_YM: queryMonth,
         apikey: API_KEY
       },
-      timeout: 10000
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0'
+      }
     });
 
+    console.log('부동산원 API 응답 수신');
     res.json(response.data);
   } catch (error) {
     console.error('API 오류:', error.message);
@@ -53,7 +64,9 @@ function getLastMonth() {
   return year + String(month).padStart(2, '0');
 }
 
+// Heroku 포트 사용
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log('프록시 서버 실행 중: http://localhost:' + PORT);
+  console.log(`✅ 프록시 서버 실행 중: http://localhost:${PORT}`);
+  console.log(`✅ API 엔드포인트: http://localhost:${PORT}/api/realestate`);
 });
