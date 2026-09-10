@@ -1,0 +1,17 @@
+title: All About the World
+description: "세상의 모든 정보를 큐레이션합니다 - 주식(종목분석), 여행, 그리고 더 많은 카테고리."
+url: "https://big-rds.github.io"
+baseurl: ""
+lang: ko
+author: ikgyubae@gmail.com
+
+# This site is a static HTML/CSS/JS site (no Jekyll templating is required),
+# but _config.yml is kept so GitHub Pages serves the repository as-is and
+# so the custom domain / future Jekyll usage can be configured here.
+plugins: []
+
+exclude:
+  - README.md
+
+# GitHub Pages configuration
+markdown: kramdown

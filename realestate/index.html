@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real Estate | All About the World</title>
+  <meta name="description" content="Real estate transaction information from the Korea Real Estate Board." />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .realestate-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .filter-section {
+      background: #f5f5f5;
+      padding: 1.5rem;
+      border-radius: 8px;
+      height: fit-content;
+    }
+
+    .filter-section h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .filter-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .filter-group input[type="checkbox"],
+    .filter-group input[type="text"],
+    .filter-group select {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+
+    .filter-group input[type="text"],
+    .filter-group select {
+      width: 100%;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-submit {
+      flex: 1;
+      padding: 0.75rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.3s;
+    }
+
+    .btn-submit:hover {
+      background: #0056b3;
+    }
+
+    .btn-submit:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .btn-refresh {
+      flex: 1;
+      padding: 0.75rem;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.3s;
+    }
+
+    .btn-refresh:hover {
+      background: #218838;
+    }
+
+    .btn-refresh:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .table-section {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      grid-column: 1 / -1;
+    }
+
+    .table-header {
+      background: #f5f5f5;
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .last-updated {
+      font-size: 0.85rem;
+      color: #999;
+      margin-right: 0.5rem;
+    }
+
+    .table-scroll {
+      overflow-y: auto;
+      max-height: 500px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .data-table thead {
+      background: #f9f9f9;
+      border-bottom: 2px solid #ddd;
+      position: sticky;
+      top: 0;
+    }
+
+    .data-table th {
+      padding: 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      color: #555;
+      border-right: 1px solid #eee;
+    }
+
+    .data-table th:last-child {
+      border-right: none;
+    }
+
+    .data-table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #eee;
+      border-right: 1px solid #eee;
+    }
+
+    .data-table td:last-child {
+      border-right: none;
+    }
+
+    .data-table tbody tr:hover {
+      background: #f9f9f9;
+    }
+
+    .empty-state {
+      padding: 2rem;
+      text-align: center;
+      color: #999;
+    }
+
+    .loading {
+      padding: 2rem;
+      text-align: center;
+      color: #666;
+    }
+
+    .price-highlight {
+      color: #d9534f;
+      font-weight: 600;
+    }
+
+    .date-small {
+      color: #999;
+      font-size: 0.85rem;
+    }
+
+    .stats-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-card.avg {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .stat-card.count {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .auto-update-badge {
+      display: inline-block;
+      background: #28a745;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+
+    .alert {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .alert.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+
+    .alert.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+
+    .alert.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+      display: block;
+    }
+
+    .location-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .location-selector select {
+      width: 100%;
+    }
+
+    @media (max-width: 1024px) {
+      .realestate-container {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-section {
+        grid-template-columns: 1fr;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .location-selector {
+        grid-template-columns: 1fr;
+      }
+
+      .data-table {
+        font-size: 0.85rem;
+      }
+
+      .data-table td,
+      .data-table th {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-lockup">
+        <a class="site-logo" href="../index.html">All About <span>the World</span></a>
+        <a class="site-domain" href="https://big-rds.github.io/WebSiteBlog/">big-rds.github.io</a>
+      </div>
+      <nav class="site-nav" id="mainNav">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../stock/index.html">Stock Analysis</a></li>
+          <li><a href="index.html" class="active">Real Estate</a></li>
+          <li><a href="../travel/index.html">Travel</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>부동산 실거래가</h1>
+      <p>지역별 최신 실거래 정보</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="section">
+      <div id="alertMessage" class="alert"></div>
+
+      <div class="stats-section">
+        <div class="stat-card">
+          <div class="stat-label">최고가</div>
+          <div class="stat-value" id="maxPriceDisplay">-</div>
+          <div class="stat-label">백만</div>
+        </div>
+        <div class="stat-card avg">
+          <div class="stat-label">평균가</div>
+          <div class="stat-value" id="avgPriceDisplay">-</div>
+          <div class="stat-label">백만</div>
+        </div>
+        <div class="stat-card count">
+          <div class="stat-label">총 건수</div>
+          <div class="stat-value" id="recordCountDisplay">-</div>
+          <div class="stat-label">건</div>
+        </div>
+      </div>
+
+      <div class="realestate-container">
+        <div class="filter-section">
+          <h3>🔍 필터</h3>
+          
+          <div class="filter-group">
+            <label>지역 선택</label>
+            <div class="location-selector">
+              <select id="provinceSelect">
+                <option value="">시/도 선택</option>
+                <option value="11">서울</option>
+                <option value="26">부산</option>
+                <option value="27">대구</option>
+                <option value="28">인천</option>
+                <option value="29">광주</option>
+                <option value="30">대전</option>
+                <option value="31">울산</option>
+                <option value="36">세종</option>
+                <option value="41">경기</option>
+                <option value="42">강원</option>
+                <option value="43">충북</option>
+                <option value="44">충남</option>
+                <option value="45">전북</option>
+                <option value="46">전남</option>
+                <option value="47">경북</option>
+                <option value="48">경남</option>
+                <option value="50">제주</option>
+              </select>
+              <select id="districtSelect" disabled>
+                <option value="">구/시 선택</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button class="btn-refresh" id="refreshDataBtn">최신정보가져오기</button>
+          </div>
+
+          <div class="filter-group">
+            <label>부동산 유형</label>
+            <label>
+              <input type="checkbox" id="filterApartment" checked />
+              아파트 (A)
+            </label>
+            <label>
+              <input type="checkbox" id="filterHouse" />
+              주택 (H)
+            </label>
+            <label>
+              <input type="checkbox" id="filterVilla" />
+              빌라 (V)
+            </label>
+          </div>
+          <div class="filter-group">
+            <label>거래유형</label>
+            <label>
+              <input type="checkbox" id="filterDealType_매매" checked />
+              매매
+            </label>
+            <label>
+              <input type="checkbox" id="filterDealType_전세" checked />
+              전세
+            </label>
+            <label>
+              <input type="checkbox" id="filterDealType_월세" checked />
+              월세
+            </label>
+          </div>
+          <div class="filter-group">
+            <label>최소 가격 (백만)</label>
+            <input type="text" id="minPrice" placeholder="0" />
+          </div>
+          <div class="filter-group">
+            <label>최대 가격 (백만)</label>
+            <input type="text" id="maxPrice" placeholder="999999" />
+          </div>
+          <button class="btn-submit" id="applyFiltersBtn">필터 적용</button>
+        </div>
+
+        <div class="table-section">
+          <div class="table-header">
+            <div>
+              <h3>실거래 정보</h3>
+              <span class="last-updated" id="lastUpdated"></span>
+              <span class="auto-update-badge">부동산원 API</span>
+            </div>
+            <span id="recordCount" style="color: #666; font-size: 0.9rem;"></span>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table" id="realestateTable">
+              <thead>
+                <tr>
+                  <th>거래유형</th>
+                  <th>아파트명</th>
+                  <th>가격 (백만)</th>
+                  <th>면적 (m²)</th>
+                  <th>거래일</th>
+                </tr>
+              </thead>
+              <tbody id="realestateTableBody">
+                <tr>
+                  <td colspan="5" class="loading">지역을 선택해주세요</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <h3>All About the World</h3>
+        <p>We curate information about everything in the world.</p>
+        <div class="social-links">
+          <a href="mailto:ikgyubae@gmail.com">Email</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <ul>
+          <li><a href="../stock/index.html">Stock Analysis</a></li>
+          <li><a href="index.html">Real Estate</a></li>
+          <li><a href="../travel/index.html">Travel</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 All About the World. All rights reserved.</div>
+  </footer>
+
+  <script>
+    var allTransactionData = [];
+    var filteredData = [];
+    var PROXY_URL = '/api/realestate';
+    
+    var locationData = {
+      '11': { name: '서울', districts: { '11010': '종로구', '11020': '중구', '11030': '용산구', '11040': '성동구', '11050': '광진구', '11060': '동대문구', '11070': '중랑구', '11080': '성북구', '11090': '강북구', '11100': '도봉구', '11110': '노원구', '11120': '은평구', '11130': '서대문구', '11140': '마포구', '11150': '양천구', '11160': '강서구', '11170': '구로구', '11180': '금천구', '11190': '영등포구', '11200': '동작구', '11210': '관악구', '11220': '서초구', '11230': '강남구', '11240': '송파구', '11250': '강동구' } },
+      '26': { name: '부산', districts: { '26110': '중구', '26140': '서구', '26170': '동구', '26200': '영도구', '26230': '부산진구', '26260': '동래구', '26290': '남구', '26320': '북구', '26350': '해운대구', '26380': '사상구', '26410': '금정구', '26440': '강서구', '26710': '연제구', '26740': '수영구', '26770': '사하구', '26800': '기장군' } },
+      '41': { name: '경기', districts: { '41131': '수원시', '41135': '성남시', '41189': '안양시', '41205': '부천시', '41210': '광명시', '41220': '평택시', '41230': '동두천시', '41240': '안산시', '41250': '고양시', '41260': '과천시', '41270': '구리시', '41280': '남양주시', '41290': '오산시', '41300': '시흥시', '41310': '군포시', '41320': '의왕시', '41330': '하남시', '41340': '용인시', '41350': '파주시', '41360': '이천시', '41370': '안성시', '41380': '김포시', '41390': '화성시', '41400': '광주시', '41410': '여주시' } },
+      '42': { name: '강원', districts: { '42110': '춘천시', '42130': '원주시', '42150': '강릉시', '42170': '동해시', '42190': '태백시', '42210': '속초시', '42230': '삼척시' } }
+    };
+
+    function showAlert(message, type) {
+      if (!type) type = 'info';
+      var alertDiv = document.getElementById('alertMessage');
+      alertDiv.textContent = message;
+      alertDiv.className = 'alert ' + type;
+      setTimeout(function() {
+        alertDiv.className = 'alert';
+      }, 5000);
+    }
+
+    function updateDistrictSelect() {
+      var provinceCode = document.getElementById('provinceSelect').value;
+      var districtSelect = document.getElementById('districtSelect');
+      
+      districtSelect.innerHTML = '<option value="">구/시 선택</option>';
+      
+      if (provinceCode && locationData[provinceCode]) {
+        districtSelect.disabled = false;
+        var districts = locationData[provinceCode].districts;
+        for (var code in districts) {
+          if (districts.hasOwnProperty(code)) {
+            var option = document.createElement('option');
+            option.value = code;
+            option.textContent = districts[code];
+            districtSelect.appendChild(option);
+          }
+        }
+      } else {
+        districtSelect.disabled = true;
+      }
+    }
+
+    function fetchRealEstateDataFromAPI() {
+      var districtSelect = document.getElementById('districtSelect');
+      var districtCode = districtSelect.value;
+      
+      if (!districtCode || districtCode === '') {
+        showAlert('구/시를 선택해주세요.', 'error');
+        return;
+      }
+
+      document.getElementById('refreshDataBtn').disabled = true;
+      showAlert('부동산원 데이터 조회 중...', 'info');
+
+      fetch(PROXY_URL + '?districtCode=' + districtCode)
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error('API 조회 실패: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(function(data) {
+          if (data.response && data.response.body && data.response.body.items) {
+            var items = data.response.body.items.item;
+            var itemArray = Array.isArray(items) ? items : [items];
+            
+            allTransactionData = itemArray.map(function(item) {
+              return {
+                type: 'A',
+                dealType: '매매',
+                address: item.아파트 || '미정',
+                price: parseInt(item.거래금액) * 10000,
+                area: parseFloat(item.건물면적) || 0,
+                date: item.년 + String(item.월).padStart(2, '0') + String(item.일).padStart(2, '0')
+              };
+            });
+
+            displayData();
+            showAlert(allTransactionData.length + '건의 최신 거래 정보를 불러왔습니다.', 'success');
+          } else {
+            allTransactionData = [];
+            displayData();
+            showAlert('선택한 지역에 거래 정보가 없습니다.', 'info');
+          }
+        })
+        .catch(function(error) {
+          console.error('API 오류:', error);
+          showAlert('데이터 조회 실패: ' + error.message, 'error');
+        })
+        .finally(function() {
+          document.getElementById('refreshDataBtn').disabled = false;
+        });
+    }
+
+    function formatDealType(dealType, type) {
+      return dealType + '(' + type + ')';
+    }
+
+    function formatDate(dateString) {
+      if (!dateString || dateString.length !== 8) return dateString;
+      var year = dateString.substring(0, 4);
+      var month = dateString.substring(4, 6);
+      var day = dateString.substring(6, 8);
+      return year + '/' + month + '/' + day;
+    }
+
+    function formatPrice(price) {
+      return Math.round(price / 100);
+    }
+
+    function updateStats() {
+      if (filteredData.length === 0) {
+        document.getElementById('maxPriceDisplay').textContent = '-';
+        document.getElementById('avgPriceDisplay').textContent = '-';
+        document.getElementById('recordCountDisplay').textContent = '0';
+        return;
+      }
+
+      var prices = filteredData.map(function(d) { return d.price; });
+      var maxPrice = Math.max.apply(null, prices);
+      var avgPrice = prices.reduce(function(a, b) { return a + b; }, 0) / prices.length;
+      
+      document.getElementById('maxPriceDisplay').textContent = formatPrice(maxPrice).toLocaleString();
+      document.getElementById('avgPriceDisplay').textContent = Math.round(formatPrice(avgPrice)).toLocaleString();
+      document.getElementById('recordCountDisplay').textContent = filteredData.length;
+    }
+
+    function updateLastUpdated() {
+      if (allTransactionData.length > 0) {
+        var newestDate = allTransactionData[0].date;
+        var formattedDate = formatDate(newestDate);
+        document.getElementById('lastUpdated').textContent = '최종 업데이트: ' + formattedDate;
+      }
+    }
+
+    function displayData() {
+      filteredData = allTransactionData;
+      updateTable();
+      updateStats();
+      updateLastUpdated();
+      document.getElementById('recordCount').textContent = '총 ' + filteredData.length + '건';
+    }
+
+    function updateTable() {
+      var tbody = document.getElementById('realestateTableBody');
+      tbody.innerHTML = '';
+
+      if (filteredData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">검색 결과가 없습니다</td></tr>';
+        return;
+      }
+
+      filteredData.forEach(function(item) {
+        var row = tbody.insertRow();
+        row.innerHTML = '<td>' + formatDealType(item.dealType, item.type) + '</td><td>' + item.address + '</td><td class="price-highlight">' + formatPrice(item.price).toLocaleString() + '</td><td>' + item.area + '</td><td><span class="date-small">' + formatDate(item.date) + '</span></td>';
+      });
+    }
+
+    function applyFilters() {
+      var apartment = document.getElementById('filterApartment').checked;
+      var house = document.getElementById('filterHouse').checked;
+      var villa = document.getElementById('filterVilla').checked;
+      
+      var dealTypeMae = document.getElementById('filterDealType_매매').checked;
+      var dealTypeJeon = document.getElementById('filterDealType_전세').checked;
+      var dealTypeWol = document.getElementById('filterDealType_월세').checked;
+      
+      var minPrice = (parseInt(document.getElementById('minPrice').value) || 0) * 100;
+      var maxPrice = (parseInt(document.getElementById('maxPrice').value) || 999999) * 100;
+
+      filteredData = allTransactionData.filter(function(item) {
+        var typeMatch = 
+          (apartment && item.type === 'A') ||
+          (house && item.type === 'H') ||
+          (villa && item.type === 'V');
+        
+        var dealTypeMatch = 
+          (dealTypeMae && item.dealType === '매매') ||
+          (dealTypeJeon && item.dealType === '전세') ||
+          (dealTypeWol && item.dealType === '월세');
+        
+        var priceMatch = item.price >= minPrice && item.price <= maxPrice;
+        
+        return typeMatch && dealTypeMatch && priceMatch;
+      });
+
+      updateTable();
+      updateStats();
+      document.getElementById('recordCount').textContent = '총 ' + filteredData.length + '건';
+    }
+
+    document.getElementById('provinceSelect').addEventListener('change', updateDistrictSelect);
+    document.getElementById('applyFiltersBtn').addEventListener('click', applyFilters);
+    document.getElementById('refreshDataBtn').addEventListener('click', fetchRealEstateDataFromAPI);
+
+    window.addEventListener('load', function() {
+      showAlert('시/도 → 구/시를 선택하고 최신정보가져오기를 누르세요', 'info');
+    });
+  </script>
+</body>
+</html>
