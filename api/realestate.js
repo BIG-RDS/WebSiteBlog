@@ -62,7 +62,7 @@ async function handler(req, res) {
     console.log(`📍 요청: 지역코드=${districtCode}, 거래월=${queryMonth}`);
 
     const response = await fetch(requestUrl, {
-      timeout: 10000,
+      signal: AbortSignal.timeout(10000),
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }

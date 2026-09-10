@@ -1,57 +1,13 @@
 #!/usr/bin/env node
 
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-const app = express();
+const http = require('http');
+const { XMLParser } = require('fast-xml-parser');
 
-app.use(cors());
-app.use(express.json());
-
-const API_KEY = '917b3e0dec8442b0a8510864bea67ec5';
 const REAL_ESTATE_API = 'https://rt-api.re.go.kr/RealEstateService/SaleList';
-
-// 헬스 체크
-app.get('/', (req, res) => {
-  res.json({ 
-    status: '✅ 부동산원 API 프록시 서버 정상 작동중',
-    version: '1.0.0'
-  });
-});
-
-app.get('/api/realestate', async (req, res) => {
-  try {
-    const { districtCode, dealYM } = req.query;
-
-    if (!districtCode) {
-      return res.status(400).json({ error: '구/시 코드가 필요합니다' });
-    }
-
-    const queryMonth = dealYM || getLastMonth();
-
-    console.log(`📍 요청: 지역코드=${districtCode}, 거래월=${queryMonth}`);
-
-    const response = await axios.get(REAL_ESTATE_API, {
-      params: {
-        LAWD_CD: districtCode,
-        DEAL_YM: queryMonth,
-        apikey: API_KEY
-      },
-      timeout: 10000,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
-    });
-
-    console.log('✅ 부동산원 API 응답 수신');
-    res.json(response.data);
-  } catch (error) {
-    console.error('❌ API 오류:', error.message);
-    res.status(500).json({ 
-      error: '데이터 조회 실패',
-      message: error.message 
-    });
-  }
+const parser = new XMLParser({
+  ignoreAttributes: false,
+  parseTagValue: true,
+  trimValues: true
 });
 
 function getLastMonth() {
@@ -69,9 +25,102 @@ function getLastMonth() {
   return year + String(month).padStart(2, '0');
 }
 
+function setCorsHeaders(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
+function sendJson(res, statusCode, body) {
+  setCorsHeaders(res);
+  res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
+  res.end(JSON.stringify(body));
+}
+
+async function handleRealEstateRequest(searchParams, res) {
+  const districtCode = searchParams.get('districtCode');
+  const dealYM = searchParams.get('dealYM');
+  const apiKey = process.env.REAL_ESTATE_API_KEY;
+
+  if (!districtCode) {
+    sendJson(res, 400, { error: '구/시 코드가 필요합니다' });
+    return;
+  }
+
+  if (!apiKey) {
+    sendJson(res, 500, { error: 'REAL_ESTATE_API_KEY 환경변수가 설정되지 않았습니다' });
+    return;
+  }
+
+  try {
+    const queryMonth = dealYM || getLastMonth();
+    const requestUrl = new URL(REAL_ESTATE_API);
+
+    requestUrl.searchParams.set('LAWD_CD', districtCode);
+    requestUrl.searchParams.set('DEAL_YM', queryMonth);
+    requestUrl.searchParams.set('apikey', apiKey);
+
+    console.log(`📍 요청: 지역코드=${districtCode}, 거래월=${queryMonth}`);
+
+    const response = await fetch(requestUrl, {
+      signal: AbortSignal.timeout(10000),
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`부동산원 API 응답 오류: ${response.status}`);
+    }
+
+    const xml = await response.text();
+    const data = parser.parse(xml);
+
+    console.log('✅ 부동산원 API 응답 수신');
+    sendJson(res, 200, data);
+  } catch (error) {
+    console.error('❌ API 오류:', error.message);
+    sendJson(res, 500, {
+      error: '데이터 조회 실패',
+      message: error.message
+    });
+  }
+}
+
 // Render 포트 설정
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
+const server = http.createServer((req, res) => {
+  const requestUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+
+  if (req.method === 'OPTIONS') {
+    setCorsHeaders(res);
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
+  if (req.method !== 'GET') {
+    sendJson(res, 405, { error: 'GET 요청만 지원합니다' });
+    return;
+  }
+
+  if (requestUrl.pathname === '/') {
+    sendJson(res, 200, {
+      status: '✅ 부동산원 API 프록시 서버 정상 작동중',
+      version: '1.0.0'
+    });
+    return;
+  }
+
+  if (requestUrl.pathname === '/api/realestate') {
+    handleRealEstateRequest(requestUrl.searchParams, res);
+    return;
+  }
+
+  sendJson(res, 404, { error: '요청한 경로를 찾을 수 없습니다' });
+});
+
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 프록시 서버 실행 중: PORT ${PORT}`);
-  console.log(`🌐 API 엔드포인트: /api/realestate`);
+  console.log('🌐 API 엔드포인트: /api/realestate');
 });

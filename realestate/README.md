@@ -7,11 +7,13 @@
 ```bash
 cd realestate
 npm install
+export REAL_ESTATE_API_KEY=your-api-key
 ```
 
 ### 2️⃣ 프록시 서버 실행
 
 ```bash
+export REAL_ESTATE_API_KEY=your-api-key
 npm start
 ```
 
@@ -116,6 +118,7 @@ Vercel 도메인에서 페이지를 직접 열면 `/api/realestate`를 자동으
 ```bash
 cd realestate
 npm install
+export REAL_ESTATE_API_KEY=your-api-key
 npm start
 ```
 
