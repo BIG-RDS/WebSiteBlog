@@ -181,7 +181,13 @@ const server = http.createServer((req, res) => {
   }
 
   if (requestUrl.pathname === '/api/realestate') {
-    handleRealEstateRequest(req, requestUrl.searchParams, res);
+    handleRealEstateRequest(req, requestUrl.searchParams, res).catch(function(error) {
+      console.error('❌ API 오류:', error.message);
+      sendJson(req, res, 500, {
+        error: '데이터 조회 실패',
+        message: error.message
+      });
+    });
     return;
   }
 
